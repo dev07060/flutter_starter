@@ -19,7 +19,6 @@ class _SafeAreaExampleState extends State<SafeAreaExample>
   void initState() {
     super.initState();
     pc = PanelController();
-
     animationController = AnimationController(vsync: this);
   }
 

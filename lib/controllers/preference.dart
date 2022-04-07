@@ -1,20 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 const url = 'http://3.35.147.41:5000/';
+// const url = 'http://192.168.35.179:5000/';
 // const url = "http://192.168.0.37:5000/";
 const state = 'state=';
-// const url = "https://2720-35-234-31-70.ngrok.io/";
-// const url = 'http://192.168.35.195:5001/';
-// const url = "http://192.168.35.20:5001/";
-// const url = "http://172.30.1.27:5001//";
+
 var currentUser = FirebaseAuth.instance.currentUser;
+
+int len = state_list.length;
+
 String bdi_call = "bdiscale?email=";
 String email = "1111@gmail.com";
 String name = currentUser.displayName;
-List<String> chat_list;
-List state_list = ['start'];
 String distType = 'start';
 
-int len = state_list.length;
+List<String> chat_list;
+List state_list = ['start'];
 
 const bdiDist = {
   1: "슬픔",
@@ -50,6 +51,16 @@ const emotions = {
   7: "혐오"
 };
 
+final List<String> imagesList = [
+  'https://i.insider.com/5eea8a48f0f419386721f9e8?width=1136&format=jpeg',
+  'https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2015/08/22/c_km601/684186_540_2.jpg',
+  'https://i.ytimg.com/vi/dq7gXN0QZco/hqdefault.jpg',
+  'https://cdn.mindgil.com/news/photo/201812/67622_4_1642.jpg'
+];
 
-// const url = "http://192.168.0.37:5001/";
-
+final List<String> titles = [
+  ' 5000보 걷기 ',
+  ' 혼자 음악 듣기 ',
+  ' 컬러링북 ',
+  ' 5분 명상 ',
+];

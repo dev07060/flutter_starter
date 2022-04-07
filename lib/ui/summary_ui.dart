@@ -12,19 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:sliding_panel/sliding_panel.dart';
 
-final List<String> imagesList = [
-  'https://i.insider.com/5eea8a48f0f419386721f9e8?width=1136&format=jpeg',
-  'https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2015/08/22/c_km601/684186_540_2.jpg',
-  'https://i.ytimg.com/vi/dq7gXN0QZco/hqdefault.jpg',
-  'https://cdn.mindgil.com/news/photo/201812/67622_4_1642.jpg'
-];
-final List<String> titles = [
-  ' 5000보 걷기 ',
-  ' 혼자 음악 듣기 ',
-  ' 컬러링북 ',
-  ' 5분 명상 ',
-];
-
 class ResultSummary extends StatefulWidget {
   const ResultSummary({Key key}) : super(key: key);
 
@@ -33,28 +20,34 @@ class ResultSummary extends StatefulWidget {
 }
 
 class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderStateMixin{
-  double cardClickElevation = 0;
-  int _currentIndex = 0;
-  int touchedGroupIndex = -1;
-  final Color leftBarColor = Colors.blue[200];
-  final double width = 11;
   var request = "${url}api/result/";
 
-  bool safe = true;
+  double cardClickElevation = 0;
+  double _pointerValue = 0;
+
+  int total = 63;
+  int _currentIndex = 0;
+  int touchedGroupIndex = -1;
+
+  final Color leftBarColor = Colors.blue[200];
+  final double width = 11;
+
   PanelController pc;
   AnimationController animationController;
 
+  bool safe = true;
   bool _showCharts = false;
-  double _pointerValue = 0;
-  int total = 63;
+  bool isLoading = false;
+
   double _aft = 0;
   double _cgt = 0;
   double _smt = 0;
-  Map<String, dynamic> _scores;
-  Map<String, dynamic> _rank;
+
   List _chart = [];
   List _date = [];
-  bool isLoading = false;
+
+  Map<String, dynamic> _scores;
+  Map<String, dynamic> _rank;
   Map<String, dynamic> resultList;
 
   List<BarChartGroupData> showingBarGroups;
@@ -88,14 +81,17 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
 
       setState(() {
         resultList = items;
+
         _pointerValue = resultList["bdisum"].toDouble();
         _aft = resultList["aft"].toDouble();
         _smt = resultList["smt"].toDouble();
         _cgt = resultList["cgt"].toDouble();
+
         _chart = resultList["value"];
         _date = resultList["value_date"];
         _scores = resultList["scores"];
         _rank = resultList["rank"];
+
         isLoading = false;
       });
 
@@ -103,7 +99,6 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
         Map<String, dynamic> resultList;
         isLoading = false;
       });
-
       print(_chart);
     }
   }
@@ -137,19 +132,17 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
         style: textStyleTitle,
       ),
     ),
-    ...List.generate(
-      15,
-          (index) => ListTile(
-        title: Text('Item ${index + 1}'),
-      ),
+    ...List.generate(15,(index) => ListTile(title: Text('Item ${index + 1}')),
     ),
   ];
+
   static final textStyleSubHead =
   ThemeData.dark().textTheme.subtitle1.copyWith(fontSize: 20);
   static final textStyleTitle =
   ThemeData.dark().textTheme.headline6.copyWith(fontSize: 22);
   static final textStyleHeadline =
   ThemeData.dark().textTheme.headline5.copyWith(fontSize: 24);
+
   List<BarChartGroupData> showingGroups() => List.generate(_chart.length, (i) {
         switch (i) {
           // case 0:
@@ -332,7 +325,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         ),
                         !isLoading
                             ? Column(children: [
-                                Text(resultList["solution"]?? '',
+                                Text(
+                                    resultList["solution"] ?? '',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
@@ -371,7 +365,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 인지영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("원인을 파악했어요 🕵🏻‍♂️",
+                      child: Text(
+                          "원인을 파악했어요 🕵🏻‍♂️",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -381,7 +376,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("우울증을 느낄 요소가 많았어요",
+                      child: Text(
+                          "우울증을 느낄 요소가 많았어요",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -392,11 +388,15 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         ? Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank['cognitive'][0]}, ${_rank['cognitive'][1]}과 같은 우울증의 원인 요소들을 \n많이 느끼고 계신거 같아 보여요.\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
+                              "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank['cognitive'][0]}, "
+                                  "${_rank['cognitive'][1]}"
+                                  "과 같은 우울증의 원인 요소들을 "
+                                  "\n많이 느끼고 계신거 같아 보여요."
+                                  "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w300,
                               ),
                               softWrap: true,
                             ),
@@ -445,7 +445,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                         SizedBox(height: 12),
                                         Align(
                                           alignment: Alignment.center,
-                                          child: Text("요소별 측정치",
+                                          child: Text(
+                                              "요소별 측정치",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 20,
@@ -458,6 +459,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                         ),
+
                                         Expanded(
                                           child: BarChart(
                                             BarChartData(
@@ -472,14 +474,16 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                                           left: 5,
                                                           right: 4,
                                                           top: 4,
-                                                          bottom: 1),
+                                                          bottom: 1
+                                                      ),
                                                   tooltipMargin: 8,
-                                                  getTooltipItem: (
-                                                    BarChartGroupData group,
-                                                    int groupIndex,
-                                                    BarChartRodData rod,
-                                                    int rodIndex,
-                                                  ) =>
+                                                  getTooltipItem:
+                                                      (
+                                                        BarChartGroupData group,
+                                                        int groupIndex,
+                                                        BarChartRodData rod,
+                                                        int rodIndex
+                                                      ) =>
                                                       BarTooltipItem(
                                                     rod.y.toStringAsFixed(1),
                                                     const TextStyle(
@@ -599,7 +603,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                           ),
                     Align(
                       alignment: Alignment.center,
-                      child: Text("요소별 측정치는 수치가 높을수록 위험한 요소입니다",
+                      child: Text(
+                          "요소별 측정치는 수치가 높을수록 위험한 요소입니다",
                           style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey,
@@ -615,7 +620,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                 onPressed:() {},
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text(_rank['cognitive'][0],
+                                  child: Text(
+                                      _rank['cognitive'][0],
                                       style: TextStyle(
                                           fontSize: 25, color: Colors.black)),
                                 ),
@@ -667,7 +673,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("혹시 요즘..",
+                      child: Text(
+                          "혹시 요즘..",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -681,7 +688,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("슬픈 감정을 자주 느끼시나요?",
+                      child: Text(
+                          "슬픈 감정을 자주 느끼시나요?",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -691,11 +699,14 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "대화 중에 제가 느낀 Brian님의 감정상태는\n슬픈 감정을 자주 느끼시는 걸로 보여요\n떨쳐내려고 하기보다 조용한 노래를 들으며\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
+                            "대화 중에 제가 느낀 Brian님의 감정상태는"
+                            "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
+                            "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
+                            "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w300,
                         ),
                         softWrap: true,
                       ),
@@ -707,7 +718,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("자주 깜빡깜빡 하신다면🤦🏻",
+                      child: Text(
+                          "자주 깜빡깜빡 하신다면🤦🏻",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -717,7 +729,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("내 기억력 누가 훔쳐갔지?",
+                      child: Text(
+                          "내 기억력 누가 훔쳐갔지?",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -727,11 +740,13 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "집중력과 기억력에 문제가 생기신거 같네요\n심한 스트레스나 우울증에도 이런 증상이 나타나요\n몇가지 방법으로 다시 되찾을 수 있어요",
+                            "집중력과 기억력에 문제가 생기신거 같네요"
+                            "\n심한 스트레스나 우울증에도 이런 증상이 나타나요"
+                            "\n몇가지 방법으로 다시 되찾을 수 있어요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w300,
                         ),
                         softWrap: true,
                       ),
@@ -759,7 +774,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("내 통계",
+                                child: Text(
+                                    "내 통계",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 23,
@@ -952,65 +968,64 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
               ),
             ),
             SizedBox(height: 20),
-
-            // CarouselSlider(
-            //   options: CarouselOptions(
-            //     autoPlay: true,
-            //     enlargeCenterPage: true,
-            //     //scrollDirection: Axis.vertical,
-            //     onPageChanged: (index, reason) {
-            //       setState(
-            //         () {
-            //           _currentIndex = index;
-            //         },
-            //       );
-            //     },
-            //   ),
-            //   items: imagesList
-            //       .map(
-            //         (item) => Padding(
-            //           padding: const EdgeInsets.all(8.0),
-            //           child: Card(
-            //             margin: EdgeInsets.only(
-            //               top: 10.0,
-            //               bottom: 10.0,
-            //             ),
-            //             elevation: 6.0,
-            //             shadowColor: Colors.blueAccent,
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //             child: ClipRRect(
-            //               borderRadius: BorderRadius.all(
-            //                 Radius.circular(30.0),
-            //               ),
-            //               child: Stack(
-            //                 children: <Widget>[
-            //                   Image.network(
-            //                     item,
-            //                     fit: BoxFit.cover,
-            //                     width: double.infinity,
-            //                   ),
-            //                   Center(
-            //                     child: Text(
-            //                       '${titles[_currentIndex]}',
-            //                       style: TextStyle(
-            //                         fontSize: 24.0,
-            //                         fontWeight: FontWeight.bold,
-            //                         backgroundColor: Colors.black45,
-            //                         color: Colors.white,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       )
-            //       .toList(),
-            // ),
-            // SizedBox(height: 20),
+            CarouselSlider(
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                //scrollDirection: Axis.vertical,
+                onPageChanged: (index, reason) {
+                  setState(
+                    () {
+                      _currentIndex = index;
+                    },
+                  );
+                },
+              ),
+              items: imagesList
+                  .map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        margin: EdgeInsets.only(
+                          top: 10.0,
+                          bottom: 10.0,
+                        ),
+                        elevation: 6.0,
+                        shadowColor: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30.0),
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              Image.network(
+                                item,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                              Center(
+                                child: Text(
+                                  '${titles[_currentIndex]}',
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.bold,
+                                    backgroundColor: Colors.black45,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -1049,6 +1064,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
       ], showingTooltipIndicators: [
         0
       ]);
+
 // BarChartRodData(
 //   y: y2,
 //   colors: [rightBarColor],

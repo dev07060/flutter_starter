@@ -18,12 +18,12 @@ class SettingsUI extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.person),
-              onPressed: () {
-                Get.to(() => HomeUI());
-              }),
+          // IconButton(
+          //     color: Colors.black,
+          //     icon: Icon(Icons.person),
+          //     onPressed: () {
+                // Get.to(() => HomeUI());
+              // }),
         ],
         title: Text('settings.title'.tr),
       ),
