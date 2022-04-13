@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class YoutubeList extends StatefulWidget {
-  const YoutubeList({Key key}) : super(key: key);
+  const YoutubeList({Key? key}) : super(key: key);
 
   @override
   State<YoutubeList> createState() => _YoutubeListState();

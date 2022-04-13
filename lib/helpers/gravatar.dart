@@ -34,11 +34,11 @@ class Gravatar {
   }
 
   String imageUrl({
-    int size,
-    GravatarImage defaultImage,
+    int? size,
+    GravatarImage? defaultImage,
     bool forceDefault = false,
     bool fileExtension = false,
-    GravatarRating rating,
+    GravatarRating? rating,
   }) {
     String hashDigest = hash;
     Map<String, String> query = {};

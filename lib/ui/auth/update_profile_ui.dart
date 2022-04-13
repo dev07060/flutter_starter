@@ -14,9 +14,9 @@ class UpdateProfileUI extends StatelessWidget {
   Widget build(BuildContext context) {
     //print('user.name: ' + user?.value?.name);
     authController.nameController.text =
-        authController.firestoreUser.value.name;
+        authController.firestoreUser.value!.name;
     authController.emailController.text =
-        authController.firestoreUser.value.email;
+        authController.firestoreUser.value!.email;
     return Scaffold(
       appBar: AppBar(title: Text('auth.updateProfileTitle'.tr)),
       body: Form(
@@ -35,37 +35,51 @@ class UpdateProfileUI extends StatelessWidget {
                     controller: authController.nameController,
                     iconPrefix: Icons.person,
                     labelText: 'auth.nameFormField'.tr,
-                    validator: Validator().name,
+                    validator: (value) {
+                      String pattern = r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+                      RegExp regex = RegExp(pattern);
+                      if (!regex.hasMatch(value!))
+                        return 'validator.name'.tr;
+                      else
+                        return '';
+                    },
                     onChanged: (value) => null,
                     onSaved: (value) =>
-                        authController.nameController.text = value,
+                        authController.nameController.text = value!, maxLines: 1,
                   ),
                   FormVerticalSpace(),
                   FormInputFieldWithIcon(
                     controller: authController.emailController,
                     iconPrefix: Icons.email,
                     labelText: 'auth.emailFormField'.tr,
-                    validator: Validator().email,
+                    validator: (value) {
+                      String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+                      RegExp regex = RegExp(pattern);
+                      if (!regex.hasMatch(value!))
+                        return 'validator.email'.tr;
+                      else
+                        return "";
+                    },
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) => null,
                     onSaved: (value) =>
-                        authController.emailController.text = value,
+                        authController.emailController.text = value!, maxLines: 1,
                   ),
                   FormVerticalSpace(),
                   PrimaryButton(
                       labelText: 'auth.updateUser'.tr,
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           SystemChannels.textInput
                               .invokeMethod('TextInput.hide');
                           UserModel _updatedUser = UserModel(
-                              uid: authController.firestoreUser.value.uid,
+                              uid: authController.firestoreUser.value!.uid,
                               name: authController.nameController.text,
                               email: authController.emailController.text,
                               photoUrl:
-                                  authController.firestoreUser.value.photoUrl);
+                                  authController.firestoreUser.value!.photoUrl);
                           _updateUserConfirm(context, _updatedUser,
-                              authController.firestoreUser.value.email);
+                              authController.firestoreUser.value!.email);
                         }
                       }),
                   FormVerticalSpace(),
@@ -100,14 +114,14 @@ class UpdateProfileUI extends StatelessWidget {
           validator: (value) {
             String pattern = r'^.{6,}$';
             RegExp regex = RegExp(pattern);
-            if (!regex.hasMatch(value))
+            if (!regex.hasMatch(value!))
               return 'validator.password'.tr;
             else
-              return null;
+              return "";
           },
           obscureText: true,
           onChanged: (value) => null,
-          onSaved: (value) => _password.text = value,
+          onSaved: (value) => _password.text = value!,
           maxLines: 1,
         ),
         actions: <Widget>[

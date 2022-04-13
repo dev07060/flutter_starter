@@ -8,7 +8,7 @@ class VoiceController extends GetxController {
   var isListening = false.obs;
   var speechText = 'speech.comment'.tr.obs;
 
-  SpeechToText speechToText;
+  SpeechToText ?speechToText;
   @override
   void onInit() {
     super.onInit();
@@ -28,20 +28,20 @@ class VoiceController extends GetxController {
   void listen() async{
     if(!isListening.value)
       {
-        bool available = await speechToText.initialize(
+        bool available = await speechToText!.initialize(
           onStatus: (val) {},
           onError: (val) {},
         );
         if(available){
           isListening.value = true;
-          speechToText.listen(
+          speechToText?.listen(
             onResult: (val){
               speechText.value = val.recognizedWords;
             }
           );
         }else{
           isListening.value=false;
-          speechToText.stop();
+          speechToText?.stop();
           speechText.value='';
       }
     }

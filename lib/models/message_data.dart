@@ -7,10 +7,10 @@ class ChatMessageModel {
   final String dist;
 
   const ChatMessageModel({
-    @required this.message,
-    @required this.bot,
-    @required this.id,
-    @required this.dist
+    required this.message,
+    required this.bot,
+    required this.id,
+    required this.dist
   });
 
   factory ChatMessageModel.turnSnapshotIntoListRecord(Map data) {

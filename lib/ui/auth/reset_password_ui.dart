@@ -7,6 +7,10 @@ import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 
 class ResetPasswordUI extends StatelessWidget {
+  late final FocusNode emailFocusNode;
+  late final FocusNode passwordFocusNode;
+  late final FocusNode nameFocusNode;
+
   final AuthController authController = AuthController.to;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -29,17 +33,24 @@ class ResetPasswordUI extends StatelessWidget {
                     controller: authController.emailController,
                     iconPrefix: Icons.email,
                     labelText: 'auth.emailFormField'.tr,
-                    validator: Validator().email,
+                    validator: (value) {
+                      String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+                      RegExp regex = RegExp(pattern);
+                      if (!regex.hasMatch(value!))
+                        return 'validator.email'.tr;
+                      else
+                        return "";
+                    },
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) => null,
                     onSaved: (value) =>
-                        authController.emailController.text = value as String,
+                        authController.emailController.text = value as String, maxLines: 1,
                   ),
                   FormVerticalSpace(),
                   PrimaryButton(
                       labelText: 'auth.resetPasswordButton'.tr,
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           await authController.sendPasswordResetEmail(context);
                         }
                       }),
@@ -65,7 +76,7 @@ class ResetPasswordUI extends StatelessWidget {
     if (authController.emailController.text == '') {
       return LabelButton(
         labelText: 'auth.signInonResetPasswordLabelButton'.tr,
-        onPressed: () => Get.offAll(SignInUI()),
+        onPressed: () => Get.offAll(SignInUI(passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,)),
       );
     }
     return Container(width: 0, height: 0);

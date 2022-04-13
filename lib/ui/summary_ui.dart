@@ -13,7 +13,7 @@ import 'package:blinking_text/blinking_text.dart';
 import 'package:sliding_panel/sliding_panel.dart';
 
 class ResultSummary extends StatefulWidget {
-  const ResultSummary({Key key}) : super(key: key);
+  const ResultSummary({Key? key}) : super(key: key);
 
   @override
   _SegmentsPageState createState() => _SegmentsPageState();
@@ -29,11 +29,11 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
   int _currentIndex = 0;
   int touchedGroupIndex = -1;
 
-  final Color leftBarColor = Colors.blue[200];
+  final Color leftBarColor = Colors.blue[200]!;
   final double width = 11;
 
-  PanelController pc;
-  AnimationController animationController;
+  PanelController ?pc;
+  AnimationController ?animationController;
 
   bool safe = true;
   bool _showCharts = false;
@@ -46,18 +46,18 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
   List _chart = [];
   List _date = [];
 
-  Map<String, dynamic> _scores;
-  Map<String, dynamic> _rank;
-  Map<String, dynamic> resultList;
+  Map<String, dynamic> ?_scores;
+  Map<String, dynamic> ?_rank;
+  Map<String, dynamic> ?resultList;
 
-  List<BarChartGroupData> showingBarGroups;
-  List<BarChartGroupData> rawBarGroups;
+  List<BarChartGroupData> ?showingBarGroups;
+  List<BarChartGroupData> ?rawBarGroups;
 
-  List<BarChartGroupData> showingCogGroups;
-  List<BarChartGroupData> rawCogBarGroups;
+  List<BarChartGroupData> ?showingCogGroups;
+  List<BarChartGroupData> ?rawCogBarGroups;
 
-  List<BarChartGroupData> showingAftGroups;
-  List<BarChartGroupData> rawAftBarGroups;
+  List<BarChartGroupData> ?showingAftGroups;
+  List<BarChartGroupData> ?rawAftBarGroups;
 
   @override
   void initState() {
@@ -82,15 +82,15 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
       setState(() {
         resultList = items;
 
-        _pointerValue = resultList["bdisum"].toDouble();
-        _aft = resultList["aft"].toDouble();
-        _smt = resultList["smt"].toDouble();
-        _cgt = resultList["cgt"].toDouble();
+        _pointerValue = resultList?["bdisum"].toDouble();
+        _aft = resultList?["aft"].toDouble();
+        _smt = resultList?["smt"].toDouble();
+        _cgt = resultList?["cgt"].toDouble();
 
-        _chart = resultList["value"];
-        _date = resultList["value_date"];
-        _scores = resultList["scores"];
-        _rank = resultList["rank"];
+        _chart = resultList?["value"];
+        _date = resultList?["value_date"];
+        _scores = resultList?["scores"];
+        _rank = resultList?["rank"];
 
         isLoading = false;
       });
@@ -137,11 +137,11 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
   ];
 
   static final textStyleSubHead =
-  ThemeData.dark().textTheme.subtitle1.copyWith(fontSize: 20);
+  ThemeData.dark().textTheme.subtitle1?.copyWith(fontSize: 20);
   static final textStyleTitle =
-  ThemeData.dark().textTheme.headline6.copyWith(fontSize: 22);
+  ThemeData.dark().textTheme.headline6?.copyWith(fontSize: 22);
   static final textStyleHeadline =
-  ThemeData.dark().textTheme.headline5.copyWith(fontSize: 24);
+  ThemeData.dark().textTheme.headline5?.copyWith(fontSize: 24);
 
   List<BarChartGroupData> showingGroups() => List.generate(_chart.length, (i) {
         switch (i) {
@@ -168,33 +168,33 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
         switch (i) {
           case 2:
             return makeFactorGroupData(
-                2, _scores['cognitive'][2].toDouble() ?? 0);
+                2, _scores?['cognitive'][2].toDouble() ?? 0);
           case 1:
             return makeFactorGroupData(
-                1, _scores['cognitive'][1].toDouble() ?? 0);
+                1, _scores?['cognitive'][1].toDouble() ?? 0);
           case 0:
             return makeFactorGroupData(
-                0, _scores['cognitive'][0].toDouble() ?? 0);
+                0, _scores?['cognitive'][0].toDouble() ?? 0);
           default:
             return throw Error();
         }
       });
 
   List<BarChartGroupData> aftGroups() =>
-      List.generate(_scores['affect'].length, (i) {
+      List.generate(_scores?['affect'].length, (i) {
         switch (i) {
           case 5:
-            return makeFactorGroupData(5, _scores['affect'][5].toDouble() ?? 0);
+            return makeFactorGroupData(5, _scores?['affect'][5].toDouble() ?? 0);
           case 4:
-            return makeFactorGroupData(4, _scores['affect'][4].toDouble() ?? 0);
+            return makeFactorGroupData(4, _scores?['affect'][4].toDouble() ?? 0);
           case 3:
-            return makeFactorGroupData(3, _scores['affect'][3].toDouble() ?? 0);
+            return makeFactorGroupData(3, _scores?['affect'][3].toDouble() ?? 0);
           case 2:
-            return makeFactorGroupData(2, _scores['affect'][2].toDouble() ?? 0);
+            return makeFactorGroupData(2, _scores?['affect'][2].toDouble() ?? 0);
           case 1:
-            return makeFactorGroupData(1, _scores['affect'][1].toDouble() ?? 0);
+            return makeFactorGroupData(1, _scores?['affect'][1].toDouble() ?? 0);
           case 0:
-            return makeFactorGroupData(0, _scores['affect'][0].toDouble() ?? 0);
+            return makeFactorGroupData(0, _scores?['affect'][0].toDouble() ?? 0);
           default:
             return throw Error();
         }
@@ -245,7 +245,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                             Padding(
                               padding: const EdgeInsets.only(
                                   right: 60.0, left: 40.0),
-                              child: Text(resultList["description"],
+                              child: Text(resultList?["description"],
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 17,
@@ -255,7 +255,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                           ],
                         ),
                         SizedBox(height: 10),
-                        BlinkText(resultList["notice"] ?? '',
+                        BlinkText(resultList?["notice"] ?? '',
                             beginColor: _pointerValue > 10 && _pointerValue < 18
                                 ? Colors.greenAccent
                                 : _pointerValue >= 18 && _pointerValue < 28
@@ -326,7 +326,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         !isLoading
                             ? Column(children: [
                                 Text(
-                                    resultList["solution"] ?? '',
+                                    resultList?["solution"] ?? '',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
@@ -341,7 +341,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     width: 330.0,
                     height: 200.0,
                     child: Shimmer.fromColors(
-                        baseColor: Colors.grey[300],
+                        baseColor: Colors.grey[300]!,
                         highlightColor: Colors.white,
                         child: Card(
                           elevation: 6,
@@ -388,15 +388,15 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         ? Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank['cognitive'][0]}, "
-                                  "${_rank['cognitive'][1]}"
+                              "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
+                                  "${_rank?['cognitive'][1]}"
                                   "과 같은 우울증의 원인 요소들을 "
                                   "\n많이 느끼고 계신거 같아 보여요."
                                   "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w300,
+                                fontWeight: FontWeight.w200,
                               ),
                               softWrap: true,
                             ),
@@ -405,7 +405,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                             width: size,
                             height: 30.0,
                             child: Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
+                                baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.white,
                                 child: Card(
                                   elevation: 6,
@@ -514,42 +514,42 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                                   getTitles: (double value) {
                                                     switch (value.toInt()) {
                                                       case 7:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [7] ??
                                                             0.0;
                                                       case 6:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [6] ??
                                                             0.0;
                                                       case 5:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [5] ??
                                                             0.0;
                                                       case 4:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [4] ??
                                                             0.0;
                                                       case 3:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [3] ??
                                                             0.0;
                                                       case 2:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [2] ??
                                                             0;
                                                       case 1:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [1] ??
                                                             0;
                                                       case 0:
-                                                        return _rank[
+                                                        return _rank?[
                                                                     'cognitive']
                                                                 [0] ??
                                                             0;
@@ -586,7 +586,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                               width: 300.0,
                               height: 350.0,
                               child: Shimmer.fromColors(
-                                  baseColor: Colors.grey[300],
+                                  baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.white,
                                   child: Card(
                                     elevation: 6,
@@ -621,7 +621,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                      _rank['cognitive'][0],
+                                      _rank?['cognitive'][0],
                                       style: TextStyle(
                                           fontSize: 25, color: Colors.black)),
                                 ),
@@ -632,7 +632,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                    _scores['cognitive'][0].toStringAsFixed(1),
+                                    _scores?['cognitive'][0].toStringAsFixed(1),
                                     style: TextStyle(
                                         fontSize: 25, color: Colors.black)),
                               )),
@@ -648,7 +648,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                 onPressed: () {},
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text(_rank['cognitive'][1],
+                                  child: Text(_rank?['cognitive'][1],
                                       style: TextStyle(
                                           fontSize: 25, color: Colors.black)),
                                 ),
@@ -659,7 +659,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                    _scores['cognitive'][1].toStringAsFixed(1),
+                                    _scores?['cognitive'][1].toStringAsFixed(1),
                                     style: TextStyle(
                                         fontSize: 25, color: Colors.black)),
                               )),
@@ -706,7 +706,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w200,
                         ),
                         softWrap: true,
                       ),
@@ -746,7 +746,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w200,
                         ),
                         softWrap: true,
                       ),
@@ -968,64 +968,6 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
               ),
             ),
             SizedBox(height: 20),
-            CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-                //scrollDirection: Axis.vertical,
-                onPageChanged: (index, reason) {
-                  setState(
-                    () {
-                      _currentIndex = index;
-                    },
-                  );
-                },
-              ),
-              items: imagesList
-                  .map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        margin: EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 10.0,
-                        ),
-                        elevation: 6.0,
-                        shadowColor: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30.0),
-                          ),
-                          child: Stack(
-                            children: <Widget>[
-                              Image.network(
-                                item,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                              Center(
-                                child: Text(
-                                  '${titles[_currentIndex]}',
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.bold,
-                                    backgroundColor: Colors.black45,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            SizedBox(height: 20),
           ],
         ),
       ),
@@ -1037,8 +979,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
         BarChartRodData(
           y: y1,
           colors: [
-            Colors.blue[200],
-            Colors.green[200],
+            Colors.blue[200]!,
+            Colors.green[200]!,
             Colors.orangeAccent,
             Colors.redAccent,
             Colors.redAccent,
@@ -1055,7 +997,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
           y: y1,
           colors: [
             Colors.white70,
-            Colors.orange[400],
+            Colors.orange[400]!,
             Colors.orangeAccent,
             Colors.orangeAccent,
           ],

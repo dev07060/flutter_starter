@@ -8,7 +8,10 @@ PrimaryButton(
 */
 
 class PrimaryButton extends StatelessWidget {
-  PrimaryButton({@required this.labelText, @required this.onPressed});
+  PrimaryButton({
+    required this.labelText,
+    required this.onPressed
+  });
 
   final String labelText;
   final void Function() onPressed;

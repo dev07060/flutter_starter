@@ -10,6 +10,13 @@ class SignUpUI extends StatelessWidget {
   final AuthController authController = AuthController.to;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  get nameFocusNode => null;
+
+  get emailFocusNode => null;
+
+  get passwordFocusNode => null;
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
@@ -24,43 +31,47 @@ class SignUpUI extends StatelessWidget {
                 children: <Widget>[
                   LogoGraphicHeader(),
                   SizedBox(height: 48.0),
-                  FormInputFieldWithIcon(
+                  CustomFormField(
                     controller: authController.nameController,
-                    iconPrefix: Icons.person,
-                    labelText: 'auth.nameFormField'.tr,
-                    validator: Validator().name,
-                    onChanged: (value) => null,
-                    onSaved: (value) =>
-                        authController.nameController.text = value,
-                  ),
-                  FormVerticalSpace(),
-                  FormInputFieldWithIcon(
-                    controller: authController.emailController,
-                    iconPrefix: Icons.email,
-                    labelText: 'auth.emailFormField'.tr,
-                    validator: Validator().email,
+                    focusNode: nameFocusNode,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) => null,
-                    onSaved: (value) =>
-                        authController.emailController.text = value,
+                    inputAction: TextInputAction.next,
+                    validator: (value) => Validator.name(
+                      name: value,
+                    ),
+                    label: 'Name',
+                    hint: 'Enter your name',
                   ),
                   FormVerticalSpace(),
-                  FormInputFieldWithIcon(
+                  CustomFormField(
+                    controller: authController.emailController,
+                    focusNode: emailFocusNode,
+                    keyboardType: TextInputType.emailAddress,
+                    inputAction: TextInputAction.next,
+                    validator: (value) => Validator.email(
+                      email: value,
+                    ),
+                    label: 'Email',
+                    hint: 'Enter your email',
+                  ),
+                  FormVerticalSpace(),
+                  CustomFormField(
                     controller: authController.passwordController,
-                    iconPrefix: Icons.lock,
-                    labelText: 'auth.passwordFormField'.tr,
-                    validator: Validator().password,
-                    obscureText: true,
-                    onChanged: (value) => null,
-                    onSaved: (value) =>
-                        authController.passwordController.text = value,
-                    maxLines: 1,
+                    focusNode: passwordFocusNode,
+                    keyboardType: TextInputType.text,
+                    inputAction: TextInputAction.done,
+                    validator: (value) => Validator.password(
+                      password: value,
+                    ),
+                    isObscure: true,
+                    label: 'Password',
+                    hint: 'Enter your password',
                   ),
                   FormVerticalSpace(),
                   PrimaryButton(
                       labelText: 'auth.signUpButton'.tr,
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           SystemChannels.textInput.invokeMethod(
                               'TextInput.hide'); //to hide the keyboard - if any
                           authController.registerWithEmailAndPassword(context);
@@ -69,7 +80,7 @@ class SignUpUI extends StatelessWidget {
                   FormVerticalSpace(),
                   LabelButton(
                     labelText: 'auth.signInLabelButton'.tr,
-                    onPressed: () => Get.to(SignInUI()),
+                    onPressed: () => Get.offAll(SignInUI(passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,)),
                   ),
                 ],
               ),

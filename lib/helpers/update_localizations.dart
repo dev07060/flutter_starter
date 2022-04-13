@@ -17,7 +17,9 @@ Future updateLocalizationFile() async {
 
   String _phraseKey = '';
   List<LocalizationModel> _localizations = [];
-  String _localizationFile = """import 'package:get/get.dart';
+  String _localizationFile =
+  """
+  import 'package:get/get.dart';
 
 class Localization extends Translations {
   @override
@@ -133,8 +135,8 @@ class LocalizationModel {
   final List<PhraseModel> phrases;
 
   LocalizationModel({
-    @required this.language,
-    @required this.phrases,
+    required this.language,
+    required this.phrases,
   });
 
   factory LocalizationModel.fromMap(Map data) {
@@ -155,7 +157,7 @@ class PhraseModel {
   String key;
   String phrase;
 
-  PhraseModel({@required this.key, @required this.phrase});
+  PhraseModel({required this.key, required this.phrase});
 
   factory PhraseModel.fromMap(Map data) {
     return PhraseModel(

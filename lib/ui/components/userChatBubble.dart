@@ -5,8 +5,8 @@ import 'package:flutter_starter/models/models.dart';
 class UserChatBubble extends StatelessWidget {
   final ChatMessageModel chatMessageModelRecord;
   const UserChatBubble({
-    Key key,
-    @required this.chatMessageModelRecord,
+    Key? key,
+    required this.chatMessageModelRecord,
   }) : super(key: key);
 
   @override

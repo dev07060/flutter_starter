@@ -5,9 +5,9 @@ class SpeechApi {
   static final _speech = SpeechToText();
 
   static Future<bool> toggleRecording({
-    @required Function(String text) onResult,
+    required Function(String text) onResult,
     // @required Function(String message) onSuccess,
-    @required ValueChanged<bool> onListening,
+    required ValueChanged<bool> onListening,
   }) async {
     if (_speech.isListening) {
       _speech.stop();

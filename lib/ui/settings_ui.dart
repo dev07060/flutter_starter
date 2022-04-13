@@ -69,7 +69,7 @@ class SettingsUI extends StatelessWidget {
           menuOptions: Globals.languageOptions,
           selectedOption: controller.currentLanguage,
           onChanged: (value) async {
-            await controller.updateLanguage(value);
+            await controller.updateLanguage(value!);
             Get.forceAppUpdate();
           },
         ),

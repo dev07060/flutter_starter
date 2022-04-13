@@ -7,7 +7,7 @@ class CustomizeDemo extends StatefulWidget {
 }
 
 class _CustomizeDemoState extends State<CustomizeDemo> {
-  PanelController pc;
+  PanelController? pc;
 
   bool draggable = true,
       snap = true,
@@ -124,7 +124,7 @@ class _CustomizeDemoState extends State<CustomizeDemo> {
                     RaisedButton(
                       child: Text("Open panel"),
                       onPressed: () {
-                        pc.collapse().then((_) {
+                        pc!.collapse().then((_) {
 //                          print('panel is collapsed now');
                         }); // open panel in Collapsed mode
                         // majority of PanelController methods return Future !!!
@@ -148,40 +148,40 @@ class _CustomizeDemoState extends State<CustomizeDemo> {
                       onPressed: () {
                         setState(() {
                           additional = !additional;
-                          pc.rebuild(then: pc.expand);
+                          pc?.rebuild(then: pc?.expand);
                         });
                       },
                     ),
                     RaisedButton(
                       child: Text("Get current state"),
                       onPressed: () {
-                        print(pc.currentState);
+                        print(pc?.currentState);
                       },
                     ),
                     RaisedButton(
                       child: Text("Get current position"),
                       onPressed: () {
-                        print(pc.currentPosition);
+                        print(pc?.currentPosition);
                         // get position between closedHeight and expandedHeight
                       },
                     ),
                     RaisedButton(
                       child: Text("Get 50% of panel's height"),
                       onPressed: () {
-                        print(pc.getPercentToPanelPosition(0.5));
+                        print(pc?.getPercentToPanelPosition(0.5));
                         // we give 50% as parameter, this wil return 50% of the panel's height, (gets updated when we use AutoSizing)
                       },
                     ),
                     RaisedButton(
                       child: Text("Set position"),
                       onPressed: () {
-                        pc.setPanelPosition(0.3); // just set position
+                        pc?.setPanelPosition(0.3); // just set position
                       },
                     ),
                     RaisedButton(
                       child: Text("Set position with animation"),
                       onPressed: () {
-                        pc.setAnimatedPanelPosition(0.3); // set with animation
+                        pc?.setAnimatedPanelPosition(0.3); // set with animation
                       },
                     ),
                     RaisedButton.icon(
@@ -287,7 +287,7 @@ class _CustomizeDemoState extends State<CustomizeDemo> {
           boxShadows: [
             BoxShadow(
               blurRadius: 16.0,
-              color: Colors.orange[400].withOpacity(0.75),
+              color: Colors.orange[400]!.withOpacity(0.75),
               spreadRadius: 4,
               offset: Offset(0, -3),
             ),

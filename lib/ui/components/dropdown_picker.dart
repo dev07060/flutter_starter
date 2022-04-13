@@ -9,13 +9,13 @@ DropdownPicker(
 
 class DropdownPicker extends StatelessWidget {
   DropdownPicker(
-      {@required this.menuOptions,
-      @required this.selectedOption,
-      @required this.onChanged});
+      {required this.menuOptions,
+      required this.selectedOption,
+      required this.onChanged});
 
   final List<dynamic> menuOptions;
   final String selectedOption;
-  final void Function(String) onChanged;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -7,8 +7,8 @@ class SubstringHighlight extends StatelessWidget {
   final TextStyle textStyleHighlight;
 
   SubstringHighlight({
-    @required this.text,
-    @required this.terms,
+    required this.text,
+    required this.terms,
     this.textStyle = const TextStyle(
       color: Colors.black,
     ),

@@ -4,34 +4,34 @@ import 'package:get/get.dart';
 class Validator {
   Validator();
 
-  String email(String value) {
+  static String? email({required String email}) {
     String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
     RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value))
+    if (!regex.hasMatch(email))
       return 'validator.email'.tr;
     else
       return null;
   }
 
-  String password(String value) {
+  static String? password({required String password}) {
     String pattern = r'^.{6,}$';
     RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value))
+    if (!regex.hasMatch(password))
       return 'validator.password'.tr;
     else
       return null;
   }
 
-  String name(String value) {
+  static String? name({required String name}) {
     String pattern = r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
     RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value))
+    if (!regex.hasMatch(name))
       return 'validator.name'.tr;
     else
       return null;
   }
 
-  String number(String value) {
+  static String? number(String value) {
     String pattern = r'^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$';
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(value))
@@ -40,7 +40,7 @@ class Validator {
       return null;
   }
 
-  String amount(String value) {
+  static String? amount(String value) {
     String pattern = r'^\d+$';
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(value))
@@ -49,12 +49,43 @@ class Validator {
       return null;
   }
 
-  String notEmpty(String value) {
+  static String? notEmpty(String value) {
     String pattern = r'^\S+$';
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'validator.notEmpty'.tr;
     else
       return null;
+  }
+
+  static String? validateName({required String name}) {
+    if (name.isEmpty) {
+      return 'Name can\'t be empty';
+    }
+
+    return null;
+  }
+
+  static String? validateEmail({required String email}) {
+    RegExp emailRegExp = RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+    if (email.isEmpty) {
+      return 'Email can\'t be empty';
+    } else if (!emailRegExp.hasMatch(email)) {
+      return 'Enter a correct email';
+    }
+
+    return null;
+  }
+
+  static String? validatePassword({required String password}) {
+    if (password.isEmpty) {
+      return 'Password can\'t be empty';
+    } else if (password.length < 6) {
+      return 'Enter a password with length at least 6';
+    }
+
+    return null;
   }
 }

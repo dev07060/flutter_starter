@@ -7,7 +7,7 @@ class ModalPanelExample extends StatefulWidget {
 }
 
 class _ModalPanelExampleState extends State<ModalPanelExample> {
-  PanelController pc;
+  PanelController? pc;
 
   String selected = 'Open the panel, and then choose an item.';
 
@@ -117,9 +117,9 @@ class _ModalPanelExampleState extends State<ModalPanelExample> {
                           forceElevated: true,
                           primary: false,
                         ),
-                        onTap: () => pc.currentState == PanelState.closed
-                            ? pc.expand()
-                            : pc.close(),
+                        onTap: () => pc?.currentState == PanelState.closed
+                            ? pc?.expand()
+                            : pc?.close(),
                         decoration:
                             PanelDecoration(padding: EdgeInsets.all(16)),
                       ),

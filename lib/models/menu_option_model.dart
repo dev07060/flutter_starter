@@ -6,5 +6,8 @@ class MenuOptionsModel {
   final String value;
   final IconData icon;
 
-  MenuOptionsModel({@required this.key, @required this.value, this.icon});
+  MenuOptionsModel({
+    required this.key,
+    required this.value,
+    required this.icon});
 }

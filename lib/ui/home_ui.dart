@@ -10,7 +10,7 @@ class HomeUI extends StatelessWidget {
     return GetBuilder<AuthController>(
       init: AuthController(),
       // ignore: unnecessary_null_comparison
-      builder: (controller) => controller.firestoreUser.value.uid == null
+      builder: (controller) => controller.firestoreUser.value?.uid == null
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -29,7 +29,7 @@ class HomeUI extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 120),
-                    Avatar(controller.firestoreUser.value),
+                    Avatar(controller.firestoreUser.value!),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,19 +38,19 @@ class HomeUI extends StatelessWidget {
                         Text(
                             'home.uidLabel'.tr +
                                 ': ' +
-                                controller.firestoreUser.value.uid,
+                                controller.firestoreUser.value!.uid,
                             style: TextStyle(fontSize: 16)),
                         FormVerticalSpace(),
                         Text(
                             'home.nameLabel'.tr +
                                 ': ' +
-                                controller.firestoreUser.value.name,
+                                controller.firestoreUser.value!.name,
                             style: TextStyle(fontSize: 16)),
                         FormVerticalSpace(),
                         Text(
                             'home.emailLabel'.tr +
                                 ': ' +
-                                controller.firestoreUser.value.email,
+                                controller.firestoreUser.value!.email,
                             style: TextStyle(fontSize: 16)),
                         FormVerticalSpace(),
                         Text(

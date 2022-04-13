@@ -7,7 +7,7 @@ class SizingExample extends StatefulWidget {
 }
 
 class _SizingExampleState extends State<SizingExample> {
-  PanelController pc;
+  PanelController? pc;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _SizingExampleState extends State<SizingExample> {
                     RaisedButton(
                       child: Text("Get PanelSizeData"),
                       onPressed: () {
-                        print(pc.sizeData);
+                        print(pc?.sizeData);
                       },
                     ),
                     Padding(

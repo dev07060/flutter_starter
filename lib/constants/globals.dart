@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_starter/models/models.dart';
 
 class Globals {
@@ -9,7 +11,7 @@ class Globals {
 //https://docs.google.com/spreadsheets/d/1oS7iJ6ocrZBA53SxRfKF0CG9HAaXeKtzvsTBhgG4Zzk/edit?usp=sharing
 
   static final List<MenuOptionsModel> languageOptions = [
-    MenuOptionsModel(key: "en", value: "English"), // English
-    MenuOptionsModel(key: "ko", value: "한국어"), // 한국어
+    MenuOptionsModel(key: "en", value: "English", icon: Icons.menu), // English
+    MenuOptionsModel(key: "ko", value: "한국어", icon: Icons.menu), // Korean한국어
   ];
 }

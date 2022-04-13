@@ -35,7 +35,7 @@ class LanguageController extends GetxController {
   }
 
   // gets the language locale app is set to
-  Locale get getLocale {
+  Locale? get getLocale {
     if (currentLanguageStore.value == '') {
       language.value = Globals.defaultLanguage;
       updateLanguage(Globals.defaultLanguage);
@@ -52,7 +52,7 @@ class LanguageController extends GetxController {
     language.value = value;
     await store.write('language', value);
     if (getLocale != null) {
-      Get.updateLocale(getLocale);
+      Get.updateLocale(getLocale!);
     }
     update();
   }

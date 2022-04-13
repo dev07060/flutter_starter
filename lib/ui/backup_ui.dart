@@ -30,8 +30,8 @@ class _ChatScreenState extends State<ChatScreen>
   int flow = 0;
   int yn = 0;
 
-  PanelController pc;
-  AnimationController animationController;
+  PanelController? pc;
+  AnimationController? animationController;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen>
   List<Widget> get _content => [
         ListTile(
           onTap: () {
-            pc.popWithThrowResult(result: 'Pizza').then((_) {
+            pc?.popWithThrowResult(result: 'Pizza').then((_) {
               setState(() {
                 selected = "You ordered Pizza.\n\nNow you can go back.";
                 behavior = BackPressBehavior.POP;
@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Sandwich');
+            pc?.popWithResult(result: 'Sandwich');
           },
           title: Text(
             'Sandwich',
@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.sendResult(result: 'Pasta');
+            pc?.sendResult(result: 'Pasta');
             // THIS WILL NOT CLOSE THE PANEL, JUST SEND THE RESULT
           },
           title: Text(
@@ -89,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Malai Kofta');
+            pc?.popWithResult(result: 'Malai Kofta');
           },
           title: Text(
             'Malai Kofta',
@@ -98,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'French Fries');
+            pc?.popWithResult(result: 'French Fries');
           },
           title: Text(
             'French Fries',
@@ -107,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Samosas');
+            pc?.popWithResult(result: 'Samosas');
           },
           title: Text(
             'Samosas',
@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Toast');
+            pc?.popWithResult(result: 'Toast');
           },
           title: Text(
             'Toast',
@@ -125,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Frankie');
+            pc?.popWithResult(result: 'Frankie');
           },
           title: Text(
             'Frankie',
@@ -134,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Burger');
+            pc?.popWithResult(result: 'Burger');
           },
           title: Text(
             'Burger',
@@ -143,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Salad');
+            pc?.popWithResult(result: 'Salad');
           },
           title: Text(
             'Salad',
@@ -152,7 +152,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Chips');
+            pc?.popWithResult(result: 'Chips');
           },
           title: Text(
             'Chips',
@@ -161,7 +161,7 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         ListTile(
           onTap: () {
-            pc.popWithResult(result: 'Cookies');
+            pc?.popWithResult(result: 'Cookies');
           },
           title: Text(
             'Cookies',
@@ -360,8 +360,8 @@ class _ChatScreenState extends State<ChatScreen>
     straightCommand(text, isCommand);
     // if submittied with empty textField, block connection
     if (text != ''.trim()) {
-      await dioConnection(bdi_call, email, text).then((value) => setState(
-          () => [message = value[0], distType = value[1], flow = value[2]]));
+      await dioConnection(bdi_call, email!, text).then((value) => setState(
+          () => [message = value![0], distType = value![1], flow = value[2]]));
       maxScrolling();
     } else {
       setState(() => {isText = false});
@@ -381,8 +381,8 @@ class _ChatScreenState extends State<ChatScreen>
               bubbleGenerate(text, 1, '');
               maxScrolling();
 
-              await dioConnection(bdi_call, email, text)
-                  .then((value) => setState(() => message = value[0]));
+              await dioConnection(bdi_call, email!, text)
+                  .then((value) => setState(() => message = value![0]));
               maxScrolling();
             });
           } else {
@@ -392,7 +392,7 @@ class _ChatScreenState extends State<ChatScreen>
       );
 }
 
-Future<List> dioConnection(String _end, String _email, String _userMsg) async {
+Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
   var formData = FormData.fromMap({
     'input_text': _userMsg,
     'present_bdi': '',
