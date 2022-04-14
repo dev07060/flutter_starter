@@ -472,8 +472,8 @@ Future<List> dioConnection(String _end, String _email, String _userMsg) async {
 
   var options = BaseOptions(
     baseUrl: '$url',
-    connectTimeout: 7000,
-    receiveTimeout: 5000,
+    connectTimeout: 10000,
+    receiveTimeout: 10000,
   );
   Dio dio = new Dio(options);
   print("state_list : $distType");
