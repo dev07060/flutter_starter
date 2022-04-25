@@ -763,7 +763,7 @@ class _SegmentsPageState extends State<ResultSummary>
                             child: Column(children: [
                               Text("내 통계 보기",
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500)),
                               Icon(Icons.bar_chart, size: 25),
                             ]),
@@ -780,6 +780,8 @@ class _SegmentsPageState extends State<ResultSummary>
                                     )),
                               ),
                               SizedBox(height: 10),
+                              // TODO: FAQ information screen for BDI explaantion
+                              // TODO: additional info for chart data changes
                               AspectRatio(
                                 aspectRatio: 1,
                                 child: Card(
@@ -951,10 +953,10 @@ class _SegmentsPageState extends State<ResultSummary>
                                   Text("내 통계 접기",
                                       style: TextStyle(
                                           color: Colors.blueGrey,
-                                          fontSize: 18,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.w500)),
                                   Icon(Icons.bar_chart,
-                                      size: 25, color: Colors.grey)
+                                      size: 30, color: Colors.grey)
                                 ]),
                               ),
                               SizedBox(height: 10),
@@ -982,7 +984,7 @@ class _SegmentsPageState extends State<ResultSummary>
             Colors.redAccent,
             Colors.redAccent,
           ],
-          width: width,
+          width: 18,
         )
       ], showingTooltipIndicators: [
         0
@@ -994,11 +996,14 @@ class _SegmentsPageState extends State<ResultSummary>
           y: y1,
           colors: [
             Colors.white70,
-            Colors.orange[400]!,
-            Colors.orangeAccent,
-            Colors.orangeAccent,
+            Colors.green[200]!,
+            Colors.green[200]!,
+            Colors.orange[600]!,
+            Colors.red[400]!,
+            Colors.redAccent,
+            Colors.redAccent,
           ],
-          width: width,
+          width: 20,
         )
       ], showingTooltipIndicators: [
         0

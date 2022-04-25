@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-const url = 'http://3.35.147.41:5000/';
-// const url = "http://192.168.0.50:5000/";
+// const url = 'http://3.35.147.41:5000/';
+const url = "http://192.168.0.50:5000/";
 const state = 'state=';
 // const url = 'http://192.168.35.179:5000/';
 
@@ -11,12 +11,12 @@ int len = state_list!.length;
 
 String bdi_call = "bdiscale?email=";
 String? email = '1111@gmail.com';
+// String? email = currentUser?.email;
 String? name = currentUser?.displayName;
 
 List<String?> chat_list = [];
 List? state_list = [];
 String? distType = 'small_talk';
-String? start = 'start';
 
 const bdiDist = {
   1: "슬픔",

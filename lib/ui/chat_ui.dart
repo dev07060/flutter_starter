@@ -389,8 +389,8 @@ class _ChatScreenState extends State<ChatScreen>
                       ),
                       onPressed: () async {
                         pc?.close();
-
-                        await dioConnection(bdi_call, email!, "안녕");
+                        welcome(email!);
+                        // await dioConnection(bdi_call, email!, "안녕");
                       },
                     ),
               SizedBox(height: 130),
@@ -437,6 +437,49 @@ class _ChatScreenState extends State<ChatScreen>
       );
 }
 
+Future<List?> welcome(String _email) async {
+  var formData = FormData.fromMap({
+    'input_text': "안녕",
+    'present_bdi': '',
+  });
+
+  var options = BaseOptions(
+    baseUrl: '$url',
+    connectTimeout: 7000,
+    receiveTimeout: 5000,
+  );
+  Dio dio = new Dio(options);
+  print("state_list : $distType");
+  try {
+    Response response =
+        await dio.post('bdiscale?email=$_email&state=start', data: formData);
+
+    String chat = response.data["출력"];
+    String bdi = response.data["생성된 질문"]["질문"];
+    String dist = response.data["생성된 질문"]["BDI"];
+    String next = response.data["분석결과"]["다음 동작"];
+    String qDist = response.data["사용자 입력 BDI 분류"]["분류 결과"];
+    state_list!.add(next);
+    print(state_list);
+
+    if (chat.contains('\n')) chat_list = chat.split('\n');
+
+    int yn = response.data["입력문장긍부정도"]["긍부정구분"]["분류 결과"];
+    if (response.statusCode == 200) {
+      if (chat.contains('\n'))
+        for (var i = 0; i < chat_list.length; i++) {
+          print(i);
+          bubbleGenerate(chat_list[i]!, 2, dist);
+        }
+      else
+        bubbleGenerate(chat, 2, dist);
+      return [chat, next, yn];
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
 Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
   var formData = FormData.fromMap({
     'input_text': _userMsg,
@@ -475,9 +518,9 @@ Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
         bubbleGenerate(chat, 2, dist);
       return [chat, next, yn];
     }
-    return null;
+    return [chat, next, yn];
   } catch (e) {
-    return throw Error();
+    return null;
   }
 }
 
