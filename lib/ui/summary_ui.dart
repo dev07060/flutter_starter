@@ -19,7 +19,8 @@ class ResultSummary extends StatefulWidget {
   _SegmentsPageState createState() => _SegmentsPageState();
 }
 
-class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderStateMixin{
+class _SegmentsPageState extends State<ResultSummary>
+    with SingleTickerProviderStateMixin {
   var request = "${url}api/result/";
 
   double cardClickElevation = 0;
@@ -32,8 +33,8 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
   final Color leftBarColor = Colors.blue[200]!;
   final double width = 11;
 
-  PanelController ?pc;
-  AnimationController ?animationController;
+  PanelController? pc;
+  AnimationController? animationController;
 
   bool safe = true;
   bool _showCharts = false;
@@ -46,18 +47,18 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
   List _chart = [];
   List _date = [];
 
-  Map<String, dynamic> ?_scores;
-  Map<String, dynamic> ?_rank;
-  Map<String, dynamic> ?resultList;
+  Map<String, dynamic>? _scores;
+  Map<String, dynamic>? _rank;
+  Map<String, dynamic>? resultList;
 
-  List<BarChartGroupData> ?showingBarGroups;
-  List<BarChartGroupData> ?rawBarGroups;
+  List<BarChartGroupData>? showingBarGroups;
+  List<BarChartGroupData>? rawBarGroups;
 
-  List<BarChartGroupData> ?showingCogGroups;
-  List<BarChartGroupData> ?rawCogBarGroups;
+  List<BarChartGroupData>? showingCogGroups;
+  List<BarChartGroupData>? rawCogBarGroups;
 
-  List<BarChartGroupData> ?showingAftGroups;
-  List<BarChartGroupData> ?rawAftBarGroups;
+  List<BarChartGroupData>? showingAftGroups;
+  List<BarChartGroupData>? rawAftBarGroups;
 
   @override
   void initState() {
@@ -103,64 +104,67 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
     }
   }
 
-
   void dispose() {
     animationController?.dispose();
     super.dispose();
   }
 
   List<Widget> get _content => [
-    ListTile(
-      leading: Icon(Icons.keyboard_arrow_up),
-      selected: true,
-      title: Text(
-        'Notice above additional padding in the header. If you disable safeAreaConfig, this will come handy. You can also disable it by setting primary: false in header',
-        style: textStyleTitle,
-      ),
-      trailing: Icon(Icons.keyboard_arrow_up),
-    ),
-    ListTile(
-      onTap: () {
-        setState(() {
-          safe = !safe;
-        });
-      },
-      selected: true,
-      leading: Icon(Icons.touch_app),
-      title: Text(
-        'SafeAreaConfig : $safe',
-        style: textStyleTitle,
-      ),
-    ),
-    ...List.generate(15,(index) => ListTile(title: Text('Item ${index + 1}')),
-    ),
-  ];
+        ListTile(
+          leading: Icon(Icons.keyboard_arrow_up),
+          selected: true,
+          title: Text(
+            'Notice above additional padding in the header. If you disable safeAreaConfig, this will come handy. You can also disable it by setting primary: false in header',
+            style: textStyleTitle,
+          ),
+          trailing: Icon(Icons.keyboard_arrow_up),
+        ),
+        ListTile(
+          onTap: () {
+            setState(() {
+              safe = !safe;
+            });
+          },
+          selected: true,
+          leading: Icon(Icons.touch_app),
+          title: Text(
+            'SafeAreaConfig : $safe',
+            style: textStyleTitle,
+          ),
+        ),
+        ...List.generate(
+          15,
+          (index) => ListTile(title: Text('Item ${index + 1}')),
+        ),
+      ];
 
   static final textStyleSubHead =
-  ThemeData.dark().textTheme.subtitle1?.copyWith(fontSize: 20);
+      ThemeData.dark().textTheme.subtitle1?.copyWith(fontSize: 20);
   static final textStyleTitle =
-  ThemeData.dark().textTheme.headline6?.copyWith(fontSize: 22);
+      ThemeData.dark().textTheme.headline6?.copyWith(fontSize: 22);
   static final textStyleHeadline =
-  ThemeData.dark().textTheme.headline5?.copyWith(fontSize: 24);
+      ThemeData.dark().textTheme.headline5?.copyWith(fontSize: 24);
 
   List<BarChartGroupData> showingGroups() => List.generate(_chart.length, (i) {
         switch (i) {
-          // case 0:
-          //   return makeGroupData(0, _chart[6].toDouble() ?? 0);
-          case 5:
-            return makeGroupData(5, _chart[5].toDouble() ?? 0);
-          case 4:
-            return makeGroupData(4, _chart[4].toDouble() ?? 0);
-          case 3:
-            return makeGroupData(3, _chart[3].toDouble() ?? 0);
-          case 2:
-            return makeGroupData(2, _chart[2].toDouble() ?? 0);
-          case 1:
-            return makeGroupData(1, _chart[1].toDouble() ?? 0);
           case 0:
+            return makeGroupData(5, _chart[5].toDouble() ?? 0);
+          case 1:
+            return makeGroupData(4, _chart[4].toDouble() ?? 0);
+          case 2:
+            return makeGroupData(3, _chart[3].toDouble() ?? 0);
+          case 3:
+            return makeGroupData(2, _chart[2].toDouble() ?? 0);
+          case 4:
+            return makeGroupData(1, _chart[1].toDouble() ?? 0);
+          case 5:
             return makeGroupData(0, _chart[0].toDouble() ?? 0);
+          // case 6:
+          //   return makeGroupData(i, _chart[i].toDouble() ?? 0);
+          // case 7:
+          //   return makeGroupData(i, _chart[i].toDouble() ?? 0);
           default:
-            return throw Error();
+            return throw 0;
         }
       });
 
@@ -176,7 +180,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
             return makeFactorGroupData(
                 0, _scores?['cognitive'][0].toDouble() ?? 0);
           default:
-            return throw Error();
+            return throw 0;
         }
       });
 
@@ -184,19 +188,25 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
       List.generate(_scores?['affect'].length, (i) {
         switch (i) {
           case 5:
-            return makeFactorGroupData(5, _scores?['affect'][5].toDouble() ?? 0);
+            return makeFactorGroupData(
+                5, _scores?['affect'][5].toDouble() ?? 0);
           case 4:
-            return makeFactorGroupData(4, _scores?['affect'][4].toDouble() ?? 0);
+            return makeFactorGroupData(
+                4, _scores?['affect'][4].toDouble() ?? 0);
           case 3:
-            return makeFactorGroupData(3, _scores?['affect'][3].toDouble() ?? 0);
+            return makeFactorGroupData(
+                3, _scores?['affect'][3].toDouble() ?? 0);
           case 2:
-            return makeFactorGroupData(2, _scores?['affect'][2].toDouble() ?? 0);
+            return makeFactorGroupData(
+                2, _scores?['affect'][2].toDouble() ?? 0);
           case 1:
-            return makeFactorGroupData(1, _scores?['affect'][1].toDouble() ?? 0);
+            return makeFactorGroupData(
+                1, _scores?['affect'][1].toDouble() ?? 0);
           case 0:
-            return makeFactorGroupData(0, _scores?['affect'][0].toDouble() ?? 0);
+            return makeFactorGroupData(
+                0, _scores?['affect'][0].toDouble() ?? 0);
           default:
-            return throw Error();
+            return throw 0;
         }
       });
 
@@ -282,18 +292,19 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                           : Colors.green[200],
                                   activeTickMarkColor: Colors.white,
                                   showValueIndicator: ShowValueIndicator.always,
-                                  activeTrackColor: _pointerValue > 10 &&
-                                          _pointerValue < 18
-                                      ? Colors.greenAccent
-                                      : _pointerValue >= 18 && _pointerValue < 28
-                                          ? Colors.orangeAccent
-                                          : _pointerValue >= 28 &&
-                                                  _pointerValue < 38
-                                              ? Colors.redAccent
-                                              : _pointerValue >= 38 &&
-                                                      _pointerValue < 63
-                                                  ? Colors.red[600]
-                                                  : Colors.blueAccent,
+                                  activeTrackColor:
+                                      _pointerValue > 10 && _pointerValue < 18
+                                          ? Colors.greenAccent
+                                          : _pointerValue >= 18 &&
+                                                  _pointerValue < 28
+                                              ? Colors.orangeAccent
+                                              : _pointerValue >= 28 &&
+                                                      _pointerValue < 38
+                                                  ? Colors.redAccent
+                                                  : _pointerValue >= 38 &&
+                                                          _pointerValue < 63
+                                                      ? Colors.red[600]
+                                                      : Colors.blueAccent,
                                   inactiveTrackColor: Colors.grey,
                                   inactiveTickMarkColor: Colors.white,
                                   thumbShape: RoundSliderThumbShape(
@@ -325,8 +336,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                         ),
                         !isLoading
                             ? Column(children: [
-                                Text(
-                                    resultList?["solution"] ?? '',
+                                Text(resultList?["solution"] ?? '',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
@@ -365,8 +375,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 인지영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "원인을 파악했어요 🕵🏻‍♂️",
+                      child: Text("원인을 파악했어요 🕵🏻‍♂️",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -376,8 +385,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "우울증을 느낄 요소가 많았어요",
+                      child: Text("우울증을 느낄 요소가 많았어요",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -389,10 +397,10 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                             alignment: Alignment.centerLeft,
                             child: Text(
                               "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
-                                  "${_rank?['cognitive'][1]}"
-                                  "과 같은 우울증의 원인 요소들을 "
-                                  "\n많이 느끼고 계신거 같아 보여요."
-                                  "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
+                              "${_rank?['cognitive'][1]}"
+                              "과 같은 우울증의 원인 요소들을 "
+                              "\n많이 느끼고 계신거 같아 보여요."
+                              "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -445,8 +453,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                         SizedBox(height: 12),
                                         Align(
                                           alignment: Alignment.center,
-                                          child: Text(
-                                              "요소별 측정치",
+                                          child: Text("요소별 측정치",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 20,
@@ -459,7 +466,6 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                         ),
-
                                         Expanded(
                                           child: BarChart(
                                             BarChartData(
@@ -474,17 +480,15 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                                           left: 5,
                                                           right: 4,
                                                           top: 4,
-                                                          bottom: 1
-                                                      ),
+                                                          bottom: 1),
                                                   tooltipMargin: 8,
                                                   getTooltipItem:
-                                                      (
-                                                        BarChartGroupData group,
-                                                        int groupIndex,
-                                                        BarChartRodData rod,
-                                                        int rodIndex
-                                                      ) =>
-                                                      BarTooltipItem(
+                                                      (BarChartGroupData group,
+                                                              int groupIndex,
+                                                              BarChartRodData
+                                                                  rod,
+                                                              int rodIndex) =>
+                                                          BarTooltipItem(
                                                     rod.y.toStringAsFixed(1),
                                                     const TextStyle(
                                                       color: Colors.white,
@@ -603,8 +607,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                           ),
                     Align(
                       alignment: Alignment.center,
-                      child: Text(
-                          "요소별 측정치는 수치가 높을수록 위험한 요소입니다",
+                      child: Text("요소별 측정치는 수치가 높을수록 위험한 요소입니다",
                           style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey,
@@ -617,11 +620,10 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                               height: 60,
                               width: size / 2,
                               child: TextButton(
-                                onPressed:() {},
+                                onPressed: () {},
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text(
-                                      _rank?['cognitive'][0],
+                                  child: Text(_rank?['cognitive'][0],
                                       style: TextStyle(
                                           fontSize: 25, color: Colors.black)),
                                 ),
@@ -673,8 +675,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "혹시 요즘..",
+                      child: Text("혹시 요즘..",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -688,8 +689,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "슬픈 감정을 자주 느끼시나요?",
+                      child: Text("슬픈 감정을 자주 느끼시나요?",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -699,10 +699,10 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                            "대화 중에 제가 느낀 Brian님의 감정상태는"
-                            "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
-                            "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
-                            "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
+                        "대화 중에 제가 느낀 Brian님의 감정상태는"
+                        "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
+                        "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
+                        "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -718,8 +718,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "자주 깜빡깜빡 하신다면🤦🏻",
+                      child: Text("자주 깜빡깜빡 하신다면🤦🏻",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -729,8 +728,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                          "내 기억력 누가 훔쳐갔지?",
+                      child: Text("내 기억력 누가 훔쳐갔지?",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -740,9 +738,9 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                            "집중력과 기억력에 문제가 생기신거 같네요"
-                            "\n심한 스트레스나 우울증에도 이런 증상이 나타나요"
-                            "\n몇가지 방법으로 다시 되찾을 수 있어요",
+                        "집중력과 기억력에 문제가 생기신거 같네요"
+                        "\n심한 스트레스나 우울증에도 이런 증상이 나타나요"
+                        "\n몇가지 방법으로 다시 되찾을 수 있어요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -774,8 +772,7 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "내 통계",
+                                child: Text("내 통계",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 23,
@@ -871,10 +868,10 @@ class _SegmentsPageState extends State<ResultSummary> with SingleTickerProviderS
                                                   margin: 20,
                                                   getTitles: (double value) {
                                                     switch (value.toInt()) {
-                                                      // case 0:
-                                                      //   return _date[0] ?? "0";
-                                                      // case 1:
-                                                      //   return _date[1] ?? "0";
+                                                      // case 7:
+                                                      //   return _date[7] ?? "0";
+                                                      // case 6:
+                                                      //   return _date[6] ?? "0";
                                                       case 5:
                                                         return _date[5] ?? "0";
                                                       case 4:
