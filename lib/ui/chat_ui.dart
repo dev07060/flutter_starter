@@ -11,7 +11,6 @@ import 'package:sliding_panel/sliding_panel.dart';
 import 'package:flutter_starter/ui/summary_ui.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/components.dart';
 import '../controllers/preference.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +25,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen>
     with SingleTickerProviderStateMixin {
-
   String text = '음성이나 텍스트를 입력해주세요';
   String message = '안녕하세요? \n대화형 문진에 오신걸 환영합니다.';
 
@@ -40,29 +38,23 @@ class _ChatScreenState extends State<ChatScreen>
   int yn = 0;
   int _currentIndex = 0;
 
-  late PanelController? pc;
-  late AnimationController? animationController;
-  late YoutubePlayerController? vc;
+  PanelController? pc;
+  AnimationController? animationController;
 
   @override
   void initState() {
     super.initState();
-    const url = "https://www.youtube.com/watch?v=GQyWIur03aw";
-
-    vc = YoutubePlayerController(initialVideoId: YoutubePlayer.convertUrlToId(url)!);
     pc = PanelController();
     animationController = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
-    super.dispose();
     animationController?.dispose();
-    pc?.panel?.dispose();
+    pc?.panel.dispose();
+    super.dispose();
     // Do some action when screen is closed
   }
-
-
 
   String selected =
       "To go back, open the panel, select an option.\nYour favorite food will be shown here.";
@@ -100,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen>
         SizedBox(height: 20),
         CarouselSlider(
           options: CarouselOptions(
-            autoPlay: false,
+            autoPlay: true,
             enlargeCenterPage: true,
             //scrollDirection: Axis.vertical,
             onPageChanged: (index, reason) {
@@ -131,16 +123,13 @@ class _ChatScreenState extends State<ChatScreen>
                       ),
                       child: Stack(
                         children: <Widget>[
-
                           Image.network(
                             item,
                             fit: BoxFit.cover,
                             width: double.infinity,
                           ),
                           Center(
-                            child: TextButton(
-                              onPressed:() {},
-                              child:Text(
+                            child: Text(
                               '${titles[_currentIndex]}',
                               style: TextStyle(
                                 fontSize: 24.0,
@@ -148,20 +137,7 @@ class _ChatScreenState extends State<ChatScreen>
                                 backgroundColor: Colors.black45,
                                 color: Colors.white,
                               ),
-                              ),
                             ),
-                          ),
-                          Positioned(
-                              top:20,
-                              left:20,
-                              child: Text('${_currentIndex + 1}',
-                                style: TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.bold,
-                                  backgroundColor: Colors.black45,
-                                  color: Colors.white,
-                                ),
-                              )
                           ),
                         ],
                       ),
@@ -171,16 +147,16 @@ class _ChatScreenState extends State<ChatScreen>
               )
               .toList(),
         ),
-        ListTile(
-          onTap: () {
-            // pc.popWithResult(result: 'Sandwich');
-            Get.to(() => SafeAreaExample());
-          },
-          title: Text(
-            '분노 절제 명상',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
+        // ListTile(
+        //   onTap: () {
+        //     // pc.popWithResult(result: 'Sandwich');
+        //     Get.to(() => SafeAreaExample());
+        //   },
+        //   title: Text(
+        //     '분노 절제 명상',
+        //     style: Theme.of(context).textTheme.headline6,
+        //   ),
+        // ),
         // ListTile(
         //   onTap: () {
         //     pc.sendResult(result: 'Pasta');
@@ -192,16 +168,16 @@ class _ChatScreenState extends State<ChatScreen>
         //     style: Theme.of(context).textTheme.headline6,
         //   ),
         // ),
-        // ListTile(
-        //   onTap: () {
-        //     // pc.popWithResult(result: 'Malai Kofta');
-        //     // await _launchUrl('https://google.com');
-        //   },
-        //   title: Text(
-        //     '긴장감 불안감 해소',
-        //     style: Theme.of(context).textTheme.headline6,
-        //   ),
-        // )
+        ListTile(
+          onTap: () {
+            // pc.popWithResult(result: 'Malai Kofta');
+            // await _launchUrl('https://google.com');
+          },
+          title: Text(
+            '긴장감 불안감 해소',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        )
       ];
   final _messageTextController = TextEditingController();
 
@@ -232,14 +208,14 @@ class _ChatScreenState extends State<ChatScreen>
       ),
       body: SafeArea(
         child: NotificationListener<SlidingPanelResult>(
-          // onNotification: (food) {
-          //   setState(() {
-          //     print('You sent ${food.result}');
-          //     selected = "You ordered ${food.result}.\n\nNow you can go back.";
-          //     behavior = BackPressBehavior.POP;
-          //   });
-          //   return false;
-          // },
+          onNotification: (food) {
+            setState(() {
+              print('You sent ${food.result}');
+              selected = "You ordered ${food.result}.\n\nNow you can go back.";
+              behavior = BackPressBehavior.POP;
+            });
+            return false;
+          },
           child: buildSlidingPanel(context),
         ),
       ),
@@ -303,9 +279,8 @@ class _ChatScreenState extends State<ChatScreen>
                     AvatarGlow(
                         animate: isListening,
                         endRadius: 33,
-                        glowColor: Theme.of(context)
-                            .primaryColor
-                            .withOpacity(0.5),
+                        glowColor:
+                            Theme.of(context).primaryColor.withOpacity(0.5),
                         child: IconButton(
                           icon: !isListening
                               ? Icon(Icons.mic_none)
@@ -433,10 +408,9 @@ class _ChatScreenState extends State<ChatScreen>
   Future toggleKeyboard() async {
     additionalCommand(distType, flow);
     straightCommand(text, isCommand);
-    if(text != ''.trim()) {
+    if (text != ''.trim()) {
       await dioConnection(bdi_call, email!, text).then((value) => setState(
-          () => chat_list = [message = value[0], distType = value[1]]));
-      print(email);
+          () => chat_list = [message = value?[0], distType = value?[1]]));
       maxScrolling();
     } else {
       setState(() => {isText = false});
@@ -450,10 +424,10 @@ class _ChatScreenState extends State<ChatScreen>
           setState(() => this.isListening = isListening);
 
           if (!isListening) {
-            Future.delayed(Duration(seconds:3), () async {
+            Future.delayed(Duration(seconds: 3), () async {
               await dioConnection(bdi_call, email!, text).then((value) =>
                   setState(() =>
-                      chat_list = [message = value[0], distType = value[1]]));
+                      chat_list = [message = value?[0], distType = value?[1]]));
               maxScrolling();
             });
           } else {
@@ -463,8 +437,7 @@ class _ChatScreenState extends State<ChatScreen>
       );
 }
 
-
-Future<List> dioConnection(String _end, String _email, String _userMsg) async {
+Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
   var formData = FormData.fromMap({
     'input_text': _userMsg,
     'present_bdi': '',
@@ -472,8 +445,8 @@ Future<List> dioConnection(String _end, String _email, String _userMsg) async {
 
   var options = BaseOptions(
     baseUrl: '$url',
-    connectTimeout: 10000,
-    receiveTimeout: 10000,
+    connectTimeout: 7000,
+    receiveTimeout: 5000,
   );
   Dio dio = new Dio(options);
   print("state_list : $distType");
@@ -486,41 +459,30 @@ Future<List> dioConnection(String _end, String _email, String _userMsg) async {
     String dist = response.data["생성된 질문"]["BDI"];
     String next = response.data["분석결과"]["다음 동작"];
     String qDist = response.data["사용자 입력 BDI 분류"]["분류 결과"];
-
     state_list!.add(next);
     print(state_list);
 
     if (chat.contains('\n')) chat_list = chat.split('\n');
 
     int yn = response.data["입력문장긍부정도"]["긍부정구분"]["분류 결과"];
-
     if (response.statusCode == 200) {
-      if (qDist == "일반") {
-        if (chat.contains('\n'))
-          for (var i = 0; i < chat_list.length; i++) {
-            print(i);
-            bubbleGenerate(chat_list[i]!, 2, dist);
-          }
-        else
-          bubbleGenerate(chat, 2, dist);
-        return [chat, next, yn];
-        // print(chat_list);
-      } else {
+      if (chat.contains('\n'))
+        for (var i = 0; i < chat_list.length; i++) {
+          print(i);
+          bubbleGenerate(chat_list[i]!, 2, dist);
+        }
+      else
         bubbleGenerate(chat, 2, dist);
-        return [bdi, next, yn];
-      }
-    } else {
-      bubbleGenerate("서버 연결에 실패하였습니다.", 2, "connectionError");
-      return [bdi, next, yn];
+      return [chat, next, yn];
     }
+    return null;
   } catch (e) {
-    print(e);
+    return throw Error();
   }
-  return [];
 }
 
-
-Future<String> httpConnection(String _end, String _email, String _userMsg) async {
+Future<String> httpConnection(
+    String _end, String _email, String _userMsg) async {
   var chatUrl = Uri.parse('$url$_end$_email&$state$distType');
   var response = await http.post(chatUrl, body: {
     'input_text': _userMsg,
