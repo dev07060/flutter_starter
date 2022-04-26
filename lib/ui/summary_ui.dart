@@ -268,7 +268,7 @@ class _SegmentsPageState extends State<ResultSummary>
                         BlinkText(resultList?["notice"] ?? '',
                             beginColor: _pointerValue > 10 && _pointerValue < 18
                                 ? Colors.greenAccent
-                                : _pointerValue >= 18 && _pointerValue < 28
+                                : _pointerValue >= 18 && _pointerValue < 29
                                     ? Colors.orangeAccent
                                     : _pointerValue >= 28 && _pointerValue < 38
                                         ? Colors.redAccent
@@ -287,7 +287,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                   trackHeight: 10,
                                   thumbColor: _pointerValue > 28
                                       ? Colors.red[200]
-                                      : _pointerValue > 20 && _pointerValue < 28
+                                      : _pointerValue > 20 && _pointerValue < 29
                                           ? Colors.orange[100]
                                           : Colors.green[200],
                                   activeTickMarkColor: Colors.white,
@@ -296,7 +296,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                       _pointerValue > 10 && _pointerValue < 18
                                           ? Colors.greenAccent
                                           : _pointerValue >= 18 &&
-                                                  _pointerValue < 28
+                                                  _pointerValue < 29
                                               ? Colors.orangeAccent
                                               : _pointerValue >= 28 &&
                                                       _pointerValue < 38
