@@ -11,6 +11,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'components/components.dart';
 import '../controllers/controllers.dart';
 import '../constants/constants.dart';
+import 'ui.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -26,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen>
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
-  double _panelHeightClosed = 220.0;
+  double _panelHeightClosed = 250.0;
 
   String text = '음성이나 텍스트를 입력해주세요';
   String message = '안녕하세요? \n대화형 문진에 오신걸 환영합니다.';
@@ -91,33 +92,38 @@ class _ChatScreenState extends State<ChatScreen>
       body: SafeArea(
           child: Column(children: <Widget>[
         MessagesStream(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.keyboard),
-              tooltip: '키보드 입력 버튼',
-              onPressed: () {
-                setState(() => this.isText = true);
-                setState(() => this.draggable = false);
-              },
-            ),
-            AvatarGlow(
-                animate: isListening,
-                endRadius: 33,
-                glowColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                child: IconButton(
-                  icon: !isListening ? Icon(Icons.mic_none) : Icon(Icons.mic),
-                  onPressed: () {
-                    // maxScrolling();
-                    setState(() => isText = false);
-                    setState(() => text = '');
-                    _messageTextController.clear();
-                    toggleRecording();
-                  },
-                )),
-          ],
-        ),
+        welcomeMessage
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.keyboard),
+                    tooltip: '키보드 입력 버튼',
+                    onPressed: () {
+                      setState(() => this.isText = true);
+                      setState(() => this.draggable = false);
+                    },
+                  ),
+                  AvatarGlow(
+                      animate: isListening,
+                      endRadius: 33,
+                      glowColor:
+                          Theme.of(context).primaryColor.withOpacity(0.5),
+                      child: IconButton(
+                        icon: !isListening
+                            ? Icon(Icons.mic_none)
+                            : Icon(Icons.mic),
+                        onPressed: () {
+                          // maxScrolling();
+                          setState(() => isText = false);
+                          setState(() => text = '');
+                          _messageTextController.clear();
+                          toggleRecording();
+                        },
+                      )),
+                ],
+              )
+            : Text(""),
         buildSlidingPanel(context),
       ])),
     );
@@ -222,7 +228,9 @@ class _ChatScreenState extends State<ChatScreen>
                     child: _button(
                         "마음건강", Icons.favorite, Colors.red, Colors.red)),
                 OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(YoutubePlayerList());
+                    },
                     child: _button("힐링영상", Icons.music_video_rounded,
                         Colors.grey, Colors.grey)),
                 OutlinedButton(
@@ -241,7 +249,6 @@ class _ChatScreenState extends State<ChatScreen>
               height: 36.0,
             ),
             Container(
-              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -252,33 +259,12 @@ class _ChatScreenState extends State<ChatScreen>
                   SizedBox(
                     height: 12.0,
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 36.0,
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("About",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      )),
                   SizedBox(
-                    height: 12.0,
-                  ),
-                  Text(
-                    "",
-                    softWrap: true,
+                    height: 350,
+                    // child: _listBuild(context),
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: 24,
             ),
           ],
         ));
@@ -306,7 +292,10 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         Text(
           label,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ],
     );

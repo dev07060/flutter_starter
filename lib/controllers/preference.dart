@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-const url = 'http://3.35.147.41:5000/';
+// const url = 'http://3.35.147.41:5000/';
 // const url = "http://192.168.0.50:5000/";
 const state = 'state=';
 // const url = 'http://192.168.35.179:5000/';
+const url = 'http://172.30.1.16:5000/';
 
 var currentUser = FirebaseAuth.instance.currentUser;
 

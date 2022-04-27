@@ -30,7 +30,6 @@ dependencies:
   shimmer: ^2.0.0
   carousel_slider: ^4.0.0
   fl_chart: ^0.41.0
-  sliding_panel: ^1.3.2
   sliding_up_panel: ^2.0.0+1
   linked_scroll_controller: ^0.2.0
   youtube_api: ^1.0.4

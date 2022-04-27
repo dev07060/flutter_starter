@@ -10,4 +10,3 @@ export 'avatar.dart';
 export 'loading.dart';
 export 'userChatBubble.dart';
 export 'messageStream.dart';
-export 'recommendations.dart';

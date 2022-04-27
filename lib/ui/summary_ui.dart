@@ -10,7 +10,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blinking_text/blinking_text.dart';
-import 'package:sliding_panel/sliding_panel.dart';
 
 class ResultSummary extends StatefulWidget {
   const ResultSummary({Key? key}) : super(key: key);
@@ -33,7 +32,6 @@ class _SegmentsPageState extends State<ResultSummary>
   final Color leftBarColor = Colors.blue[200]!;
   final double width = 11;
 
-  PanelController? pc;
   AnimationController? animationController;
 
   bool safe = true;
@@ -63,7 +61,6 @@ class _SegmentsPageState extends State<ResultSummary>
   @override
   void initState() {
     super.initState();
-    pc = PanelController();
     this.fetchResult();
     animationController = AnimationController(vsync: this);
 
