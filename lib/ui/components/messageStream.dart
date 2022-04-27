@@ -32,7 +32,7 @@ void bubbleGenerate(String _message, int _id, String _dist) {
       ChatMessageModel(message: _message, id: _id, dist: _dist, bot: '');
   maxScrolling();
 
-    // print( "is: ${_message.split('\n')[1]}, ${_message.split('\n')[2]}");
+  // print( "is: ${_message.split('\n')[1]}, ${_message.split('\n')[2]}");
 
   return _chatMessagesStreamController.add(
     chatMessageModelRecord,
@@ -49,12 +49,9 @@ class _MessagesStreamState extends State<MessagesStream> {
 
   @override
   void initState() {
-    bool isCommand = false;
-
     _chatMessagesStream.listen((streamedMessages) {
       // _allMessagesContainedInTheStream.clear();
       debugPrint('Value from controller: $streamedMessages');
-
       _allMessagesContainedInTheStream.add(streamedMessages);
     });
     super.initState();

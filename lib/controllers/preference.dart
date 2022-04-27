@@ -59,9 +59,4 @@ final List<String> imagesList = [
   'https://cdn.mindgil.com/news/photo/201812/67622_4_1642.jpg'
 ];
 
-final List<String> titles = [
-  ' 5000보 걷기 ',
-  ' 혼자 음악 듣기 ',
-  ' 컬러링북 ',
-  ' 5분 명상 ',
-];
+final List<String> titles = [' 5000보 걷기 ', ' 혼자 음악 듣기 ', ' 컬러링북 ', ' 5분 명상 '];

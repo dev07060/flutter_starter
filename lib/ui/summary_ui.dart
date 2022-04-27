@@ -109,35 +109,6 @@ class _SegmentsPageState extends State<ResultSummary>
     super.dispose();
   }
 
-  List<Widget> get _content => [
-        ListTile(
-          leading: Icon(Icons.keyboard_arrow_up),
-          selected: true,
-          title: Text(
-            'Notice above additional padding in the header. If you disable safeAreaConfig, this will come handy. You can also disable it by setting primary: false in header',
-            style: textStyleTitle,
-          ),
-          trailing: Icon(Icons.keyboard_arrow_up),
-        ),
-        ListTile(
-          onTap: () {
-            setState(() {
-              safe = !safe;
-            });
-          },
-          selected: true,
-          leading: Icon(Icons.touch_app),
-          title: Text(
-            'SafeAreaConfig : $safe',
-            style: textStyleTitle,
-          ),
-        ),
-        ...List.generate(
-          15,
-          (index) => ListTile(title: Text('Item ${index + 1}')),
-        ),
-      ];
-
   static final textStyleSubHead =
       ThemeData.dark().textTheme.subtitle1?.copyWith(fontSize: 20);
   static final textStyleTitle =
@@ -222,14 +193,7 @@ class _SegmentsPageState extends State<ResultSummary>
         centerTitle: true,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Get.to(() => SettingsUI());
-              }),
-        ],
+        actions: [],
       ),
       body: SingleChildScrollView(
         child: Column(

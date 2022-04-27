@@ -1,22 +1,19 @@
-import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
-import 'package:flutter_starter/helpers/helpers.dart';
-import 'package:flutter_starter/models/models.dart';
-import 'package:sliding_panel/sliding_panel.dart';
+import 'package:flutter_starter/ui/settings_ui.dart';
 import 'package:flutter_starter/ui/summary_ui.dart';
+import 'package:flutter_starter/helpers/helpers.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'components/components.dart';
+import '../controllers/controllers.dart';
+import '../constants/constants.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'components/components.dart';
-import '../controllers/preference.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-import 'components/safe-area.dart';
 
 // ChatMessageModel _chatMessagesModel = ChatMessageModel(id: 0, message: '', bot: '', dist: '');
 class ChatScreen extends StatefulWidget {
@@ -39,151 +36,32 @@ class _ChatScreenState extends State<ChatScreen>
   bool isText = false;
   bool isCommand = false;
   bool isLoading = false;
+  bool welcomeMessage = false;
 
   int flow = 0;
   int yn = 0;
   int _currentIndex = 0;
 
   AnimationController? animationController;
+  final _messageTextController = TextEditingController();
+
+  void clearText() {
+    _messageTextController.clear();
+  }
 
   @override
   void initState() {
-    super.initState();
     animationController = AnimationController(vsync: this);
     _fabHeight = _initFabHeight;
+    super.initState();
   }
 
   @override
   void dispose() {
     animationController?.dispose();
+    clearText;
     super.dispose();
-    // Do some action when screen is closed
   }
-
-  String selected =
-      "To go back, open the panel, select an option.\nYour favorite food will be shown here.";
-
-  BackPressBehavior behavior = BackPressBehavior.PERSIST;
-
-  List<Widget> get _content => [
-        // TODO: Change the image and status along chatting status
-        Container(
-          child: Card(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: <Widget>[
-                const ListTile(
-                  leading: CircleAvatar(
-                    radius: 28,
-                    backgroundImage: AssetImage("assets/images/model.png"),
-                    backgroundColor: Colors.white24,
-                  ),
-                  title: Align(
-                    alignment: Alignment.center,
-                    child: Text('대화 진행중',
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 20, color: Colors.black)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
-        CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            enlargeCenterPage: true,
-            //scrollDirection: Axis.vertical,
-            onPageChanged: (index, reason) {
-              setState(
-                () {
-                  _currentIndex = index;
-                },
-              );
-            },
-          ),
-          items: imagesList
-              .map(
-                (item) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    margin: EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                    ),
-                    elevation: 6.0,
-                    shadowColor: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30.0),
-                      ),
-                      child: Stack(
-                        children: <Widget>[
-                          Image.network(
-                            item,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                          Center(
-                            child: Text(
-                              '${titles[_currentIndex]}',
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                backgroundColor: Colors.black45,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-        // ListTile(
-        //   onTap: () {
-        //     // pc.popWithResult(result: 'Sandwich');
-        //     Get.to(() => SafeAreaExample());
-        //   },
-        //   title: Text(
-        //     '분노 절제 명상',
-        //     style: Theme.of(context).textTheme.headline6,
-        //   ),
-        // ),
-        // ListTile(
-        //   onTap: () {
-        //     pc.sendResult(result: 'Pasta');
-        //     pc.close();
-        //     // THIS WILL NOT CLOSE THE PANEL, JUST SEND THE RESULT
-        //   },
-        //   title: Text(
-        //     '죄책감 떨치기',
-        //     style: Theme.of(context).textTheme.headline6,
-        //   ),
-        // ),
-        ListTile(
-          onTap: () {
-            // pc.popWithResult(result: 'Malai Kofta');
-            // await _launchUrl('https://google.com');
-          },
-          title: Text(
-            '긴장감 불안감 해소',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        )
-      ];
-  final _messageTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -202,100 +80,71 @@ class _ChatScreenState extends State<ChatScreen>
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.analytics),
+              icon: Icon(Icons.settings),
               onPressed: () {
-                Get.to(() => ResultSummary());
+                Get.to(() => SettingsUI());
               },
             ),
           ),
         ],
       ),
       body: SafeArea(
-        child: NotificationListener<SlidingPanelResult>(
-          onNotification: (food) {
-            setState(() {
-              print('You sent ${food.result}');
-              selected = "You ordered ${food.result}.\n\nNow you can go back.";
-              behavior = BackPressBehavior.POP;
-            });
-            return false;
-          },
-          child: buildSlidingPanel(context),
+          child: Column(children: <Widget>[
+        MessagesStream(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.keyboard),
+              tooltip: '키보드 입력 버튼',
+              onPressed: () {
+                setState(() => this.isText = true);
+                setState(() => this.draggable = false);
+              },
+            ),
+            AvatarGlow(
+                animate: isListening,
+                endRadius: 33,
+                glowColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                child: IconButton(
+                  icon: !isListening ? Icon(Icons.mic_none) : Icon(Icons.mic),
+                  onPressed: () {
+                    // maxScrolling();
+                    setState(() => isText = false);
+                    setState(() => text = '');
+                    _messageTextController.clear();
+                    toggleRecording();
+                  },
+                )),
+          ],
         ),
-      ),
+        buildSlidingPanel(context),
+      ])),
     );
   }
 
-  SlidingUpPanel buildSlidingPanel(BuildContext context) {
-    return SlidingUpPanel(
-        maxHeight: _panelHeightOpen,
-        minHeight: _panelHeightClosed,
-        parallaxEnabled: true,
-        parallaxOffset: .5,
-        isDraggable: draggable,
-        panelBuilder: (sc) => _panel(sc),
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-        onPanelSlide: (double pos) => setState(() {
-              _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
-                  _initFabHeight;
-            }),
-        body: isText
-            ? Container(
-                width: 330,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      fillColor: Colors.white30,
-                      filled: true,
-                      border: InputBorder.none),
-                  onSubmitted: (value) {
-                    setState(() => this.text = value.trim());
-                    // print("텍스트 테스트 :: $value");
-                    setState(() => this.isText = false);
-                    setState(() => this.draggable = true);
-                    // pc.close();
-                    _messageTextController.clear();
-                    bubbleGenerate(value, 1, '-');
-                    toggleKeyboard();
-                  },
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.keyboard),
-                    tooltip: '키보드 입력 버튼',
-                    onPressed: () {
-                      setState(() => this.isText = true);
-                      setState(() => this.draggable = false);
-                    },
-                  ),
-                  AvatarGlow(
-                      animate: isListening,
-                      endRadius: 33,
-                      glowColor:
-                          Theme.of(context).primaryColor.withOpacity(0.5),
-                      child: IconButton(
-                        icon: !isListening
-                            ? Icon(Icons.mic_none)
-                            : Icon(Icons.mic),
-                        onPressed: () {
-                          // maxScrolling();
-                          setState(() => isText = false);
-                          setState(() => text = '');
-                          _messageTextController.clear();
-                          toggleRecording();
-                        },
-                        // child: Text('음성 입력'),
-                      )),
-                ],
-              ));
+  Widget buildSlidingPanel(BuildContext context) {
+    final _messageTextController = TextEditingController();
+
+    _panelHeightOpen = MediaQuery.of(context).size.height * .80;
+    return Material(
+      child: Stack(alignment: Alignment.topCenter, children: <Widget>[
+        SlidingUpPanel(
+          maxHeight: _panelHeightOpen,
+          minHeight: _panelHeightClosed,
+          parallaxEnabled: true,
+          parallaxOffset: .5,
+          isDraggable: draggable,
+          panelBuilder: (sc) => _panel(sc),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+          onPanelSlide: (double pos) => setState(() {
+            _fabHeight =
+                pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
+          }),
+        ),
+      ]),
+    );
   }
 
   Widget _panel(ScrollController sc) {
@@ -323,28 +172,69 @@ class _ChatScreenState extends State<ChatScreen>
             SizedBox(
               height: 18.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Explore Pittsburgh",
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 24.0,
+            welcomeMessage
+                ? Container(
+                    width: 330,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: TextField(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                          fillColor: Colors.white30,
+                          filled: true,
+                          border: InputBorder.none),
+                      onSubmitted: (value) {
+                        setState(() => this.text = value.trim());
+                        setState(() => this.isText = true);
+                        setState(() => this.draggable = true);
+                        bubbleGenerate(value, 1, '-');
+                        toggleKeyboard();
+                      },
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      TextButton(
+                          onPressed: () async {
+                            await welcome(email!);
+                            setState(() => {welcomeMessage = true});
+                          },
+                          child: (Text("대화 시작하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14.0,
+                              )))),
+                    ],
                   ),
-                ),
-              ],
-            ),
             SizedBox(
               height: 36.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("Popular", Icons.favorite, Colors.blue),
-                _button("Food", Icons.restaurant, Colors.red),
-                _button("Events", Icons.event, Colors.amber),
-                _button("More", Icons.more_horiz, Colors.green),
+                OutlinedButton(
+                    onPressed: () {
+                      Get.to(ResultSummary());
+                    },
+                    child: _button(
+                        "마음건강", Icons.favorite, Colors.red, Colors.red)),
+                OutlinedButton(
+                    onPressed: () {},
+                    child: _button("힐링영상", Icons.music_video_rounded,
+                        Colors.grey, Colors.grey)),
+                OutlinedButton(
+                    onPressed: () {},
+                    child: _button("감정상태", Icons.emoji_emotions, Colors.grey,
+                        Colors.grey)),
+                OutlinedButton(
+                    onPressed: () {
+                      _messageTextController.clear();
+                    },
+                    child: _button(
+                        "More", Icons.more_horiz, Colors.grey, Colors.grey)),
               ],
             ),
             SizedBox(
@@ -381,8 +271,7 @@ class _ChatScreenState extends State<ChatScreen>
                     height: 12.0,
                   ),
                   Text(
-                    """Pittsburgh is a city in the state of Pennsylvania in the United States, and is the county seat of Allegheny County. A population of about 302,407 (2018) residents live within the city limits, making it the 66th-largest city in the U.S. The metropolitan population of 2,324,743 is the largest in both the Ohio Valley and Appalachia, the second-largest in Pennsylvania (behind Philadelphia), and the 27th-largest in the U.S.\n\nPittsburgh is located in the southwest of the state, at the confluence of the Allegheny, Monongahela, and Ohio rivers. Pittsburgh is known both as "the Steel City" for its more than 300 steel-related businesses and as the "City of Bridges" for its 446 bridges. The city features 30 skyscrapers, two inclined railways, a pre-revolutionary fortification and the Point State Park at the confluence of the rivers. The city developed as a vital link of the Atlantic coast and Midwest, as the mineral-rich Allegheny Mountains made the area coveted by the French and British empires, Virginians, Whiskey Rebels, and Civil War raiders.\n\nAside from steel, Pittsburgh has led in manufacturing of aluminum, glass, shipbuilding, petroleum, foods, sports, transportation, computing, autos, and electronics. For part of the 20th century, Pittsburgh was behind only New York City and Chicago in corporate headquarters employment; it had the most U.S. stockholders per capita. Deindustrialization in the 1970s and 80s laid off area blue-collar workers as steel and other heavy industries declined, and thousands of downtown white-collar workers also lost jobs when several Pittsburgh-based companies moved out. The population dropped from a peak of 675,000 in 1950 to 370,000 in 1990. However, this rich industrial history left the area with renowned museums, medical centers, parks, research centers, and a diverse cultural district.\n\nAfter the deindustrialization of the mid-20th century, Pittsburgh has transformed into a hub for the health care, education, and technology industries. Pittsburgh is a leader in the health care sector as the home to large medical providers such as University of Pittsburgh Medical Center (UPMC). The area is home to 68 colleges and universities, including research and development leaders Carnegie Mellon University and the University of Pittsburgh. Google, Apple Inc., Bosch, Facebook, Uber, Nokia, Autodesk, Amazon, Microsoft and IBM are among 1,600 technology firms generating \$20.7 billion in annual Pittsburgh payrolls. The area has served as the long-time federal agency headquarters for cyber defense, software engineering, robotics, energy research and the nuclear navy. The nation's eighth-largest bank, eight Fortune 500 companies, and six of the top 300 U.S. law firms make their global headquarters in the area, while RAND Corporation (RAND), BNY Mellon, Nova, FedEx, Bayer, and the National Institute for Occupational Safety and Health (NIOSH) have regional bases that helped Pittsburgh become the sixth-best area for U.S. job growth.
-                  """,
+                    "",
                     softWrap: true,
                   ),
                 ],
@@ -395,7 +284,7 @@ class _ChatScreenState extends State<ChatScreen>
         ));
   }
 
-  Widget _button(String label, IconData icon, Color color) {
+  Widget _button(String label, IconData icon, Color color, Color shadowColor) {
     return Column(
       children: <Widget>[
         Container(
@@ -407,20 +296,23 @@ class _ChatScreenState extends State<ChatScreen>
           decoration:
               BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.15),
-              blurRadius: 8.0,
+              color: shadowColor,
+              blurRadius: 20.0,
             )
           ]),
         ),
         SizedBox(
           height: 12.0,
         ),
-        Text(label),
+        Text(
+          label,
+          style: TextStyle(color: Colors.black),
+        ),
       ],
     );
   }
-  // ignore: non_constant_identifier_names
 
+  // ignore: non_constant_identifier_names
   // function for user typing keyboard to send message
   // (It also includes : dio connection(http connection), create chat bubbles)
   Future toggleKeyboard() async {
@@ -540,18 +432,4 @@ Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
   } catch (e) {
     return null;
   }
-}
-
-Future<String> httpConnection(
-    String _end, String _email, String _userMsg) async {
-  var chatUrl = Uri.parse('$url$_end$_email&$state$distType');
-  var response = await http.post(chatUrl, body: {
-    'input_text': _userMsg,
-    'present_bdi': ''
-  }).timeout((Duration(seconds: 5)));
-
-  print('Response status: ${response.statusCode}');
-  print('Response body: 11111111111111${utf8.decode(response.bodyBytes)}');
-
-  return utf8.decode(response.bodyBytes);
 }

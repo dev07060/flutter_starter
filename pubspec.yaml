@@ -21,6 +21,7 @@ dependencies:
   # apple_sign_in:
   get: ^4.6.1
   get_storage: ^2.0.2
+  grouped_list: ^4.2.0
   avatar_glow: ^2.0.2
   crypto: ^3.0.1
   http: ^0.13.4
