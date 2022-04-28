@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -54,16 +55,20 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
   bool _muted = false;
   bool _isPlayerReady = false;
 
+  late Timer _timer;
+  bool _isRunning = false;
+  int _timerCount = 0;
+  int _ms = 1000;
+
   final List<String> _ids = [
-    'nPt8bK2gbaU',
-    'gQDByCdjUXw',
-    'iLnmTe5Q2Qw',
-    '_WoCV4c6XOE',
-    'KmzdUe0RSJo',
-    '6jZDSSZZxjQ',
-    'p2lYr3vM_1w',
-    '7QUtEmBT_-w',
-    '34_PXCzGw1M',
+    'Z3RGo_CWuMc',
+    'Hv8h-MEBb9I',
+    'j4dUHTbw1R0',
+    '9T5stD2Q2uY',
+    'cJ1qOVJmMuY',
+    'd6TA_STdVdc',
+    'lQj1ZwqLIwc',
+    'Fxp0Vssfbyk',
   ];
 
   @override
@@ -108,6 +113,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     _controller.dispose();
     _idController.dispose();
     _seekToController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -148,11 +154,27 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
         ],
         onReady: () {
           _isPlayerReady = true;
+          if (_playerState != PlayerState.playing) {
+            setState(() {
+              _timerCount = 0;
+            });
+          } else {
+            _timer = Timer.periodic(Duration(milliseconds: _ms), (timer) {
+              setState(() {
+                _timerCount++;
+              });
+            });
+          }
+          ;
         },
         onEnded: (data) {
+          _countTime(_timerCount);
           _controller
               .load(_ids[(_ids.indexOf(data.videoId) + 1) % _ids.length]);
           _showSnackBar('Next Video Started!');
+          setState(() {
+            _timerCount = 0;
+          });
         },
       ),
       builder: (context, player) => Scaffold(
@@ -180,6 +202,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
         //     ),
         //   ],
         // ),
+
         body: ListView(
           children: [
             player,
@@ -189,9 +212,16 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                 IconButton(
                   icon: const Icon(Icons.skip_previous),
                   onPressed: _isPlayerReady
-                      ? () => _controller.load(_ids[
-                          (_ids.indexOf(_controller.metadata.videoId) - 1) %
-                              _ids.length])
+                      ? () => {
+                            _countTime(_timerCount),
+                            _controller.load(_ids[
+                                (_ids.indexOf(_controller.metadata.videoId) -
+                                        1) %
+                                    _ids.length]),
+                            setState(() {
+                              _timerCount = 0;
+                            }),
+                          }
                       : null,
                 ),
                 IconButton(
@@ -202,101 +232,67 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                   ),
                   onPressed: _isPlayerReady
                       ? () {
-                          _controller.value.isPlaying
-                              ? _controller.pause()
-                              : _controller.play();
-                          setState(() {});
+                          if (_controller.value.isPlaying) {
+                            _controller.pause();
+                            setState(() {
+                              _isRunning = false;
+                            });
+                            _timer.cancel();
+                            print(_isRunning);
+                          } else if (_playerState == PlayerState.paused) {
+                            _controller.play();
+                            setState(() {
+                              _isRunning = true;
+                            });
+                            _timer = Timer.periodic(Duration(milliseconds: _ms),
+                                (timer) {
+                              setState(() {
+                                _timerCount++;
+                              });
+                            });
+                            // print(_isRunning);
+                          }
                         }
-                      : null,
+                      : () {},
                 ),
                 IconButton(
-                  icon: Icon(_muted ? Icons.volume_off : Icons.volume_up),
-                  onPressed: _isPlayerReady
-                      ? () {
-                          _muted ? _controller.unMute() : _controller.mute();
+                    icon: const Icon(Icons.skip_next),
+                    onPressed: () => {
+                          _countTime(_timerCount),
+                          _controller.load(_ids[
+                              (_ids.indexOf(_controller.metadata.videoId) + 1) %
+                                  _ids.length]),
                           setState(() {
-                            _muted = !_muted;
-                          });
-                        }
-                      : null,
-                ),
+                            _timerCount = 0;
+                          }),
+                        }),
                 FullScreenButton(
                   controller: _controller,
                   color: Colors.blueAccent,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.skip_next),
-                  onPressed: _isPlayerReady
-                      ? () => _controller.load(_ids[
-                          (_ids.indexOf(_controller.metadata.videoId) + 1) %
-                              _ids.length])
-                      : null,
-                ),
               ],
             ),
+            _space,
+            _space,
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _space,
-                  _text('Title', _videoMetaData.title),
-                  Container(
-                    height: 350,
-                    child: _listBuild(context),
-                  ),
-                  _space,
-                  _text('Channel', _videoMetaData.author),
-                  _space,
-                  _text('Video Id', _videoMetaData.videoId),
-                  _space,
-                  Row(
-                    children: [
-                      _text(
-                        'Playback Quality',
-                        _controller.value.playbackQuality ?? '',
-                      ),
-                      const Spacer(),
-                      _text(
-                        'Playback Rate',
-                        '${_controller.value.playbackRate}x  ',
-                      ),
-                    ],
-                  ),
-                  _space,
-                  TextField(
-                    enabled: _isPlayerReady,
-                    controller: _idController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Enter youtube \<video id\> or \<link\>',
-                      fillColor: Colors.blueAccent.withAlpha(20),
-                      filled: true,
-                      hintStyle: const TextStyle(
-                        fontWeight: FontWeight.w300,
-                        color: Colors.blueAccent,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () => _idController.clear(),
-                      ),
-                    ),
-                  ),
-                  _space,
-                  Row(
-                    children: [
-                      _loadCueButton('LOAD'),
-                      const SizedBox(width: 10.0),
-                      _loadCueButton('CUE'),
-                    ],
-                  ),
-                  _space,
-                  _space,
                   Row(
                     children: <Widget>[
-                      const Text(
-                        "Volume",
-                        style: TextStyle(fontWeight: FontWeight.w300),
+                      IconButton(
+                        icon: Icon(_muted ? Icons.volume_off : Icons.volume_up),
+                        onPressed: _isPlayerReady
+                            ? () {
+                                _muted
+                                    ? _controller.unMute()
+                                    : _controller.mute();
+                                setState(() {
+                                  _muted = !_muted;
+                                });
+                              }
+                            : null,
                       ),
                       Expanded(
                         child: Slider(
@@ -318,6 +314,46 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                       ),
                     ],
                   ),
+                  _space,
+                  _text('제목', _videoMetaData.title),
+                  _space,
+                  _text('채널명', _videoMetaData.author),
+                  _space,
+                  _text('비디오 길이(초)', "${_videoMetaData.duration.inSeconds}"),
+                  _space,
+                  _text('재생 시간(초)', "${_timerCount}"),
+                  // _text('Video Id', _videoMetaData.videoId),
+                  // _space,
+                  // Row(
+                  //   children: [],
+                  // ),
+                  // _space,
+                  // TextField(
+                  //   enabled: _isPlayerReady,
+                  //   controller: _idController,
+                  //   decoration: InputDecoration(
+                  //     border: InputBorder.none,
+                  //     hintText: 'Enter youtube \<video id\> or \<link\>',
+                  //     fillColor: Colors.blueAccent.withAlpha(20),
+                  //     filled: true,
+                  //     hintStyle: const TextStyle(
+                  //       fontWeight: FontWeight.w300,
+                  //       color: Colors.blueAccent,
+                  //     ),
+                  //   ),
+                  // ),
+                  //
+                  // _space,
+                  // Row(
+                  //   children: [
+                  //     _loadCueButton('LOAD'),
+                  //     const SizedBox(width: 10.0),
+                  //     _loadCueButton('CUE'),
+                  //   ],
+                  // ),
+                  // _space,
+
+                  _space,
                   _space,
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 800),
@@ -441,6 +477,48 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
         ),
       ),
     );
+  }
+
+  int? _countTime(int time) {
+    if (time < _videoMetaData.duration.inSeconds) {
+      double fifth = _videoMetaData.duration.inSeconds / 5;
+      int a = fifth.toInt() * 1;
+      int b = fifth.toInt() * 2;
+      int c = fifth.toInt() * 3;
+      int d = fifth.toInt() * 4;
+      int e = fifth.toInt() * 5;
+
+      if (time <= a) {
+        log("5구간 점수 : 1/5");
+        log("감상 시간 (재생시간 / 영상길이): $time / ${_videoMetaData.duration.inSeconds}");
+        return 1;
+      } else if (time <= b) {
+        log("5구간 점수 : 2/5");
+        log("감상 시간 (재생시간 / 영상길이): $time / ${_videoMetaData.duration.inSeconds}");
+        return 2;
+      } else if (time <= c) {
+        log("5구간 점수 : 3/5");
+        log("감상 시간 (재생시간 / 영상길이): $time / ${_videoMetaData.duration.inSeconds}");
+        return 3;
+      } else if (time <= d) {
+        log("5구간 점수 : 4/5");
+        log("감상 시간 (재생시간 / 영상길이): $time / ${_videoMetaData.duration.inSeconds}");
+        return 4;
+      } else if (time <= e) {
+        log("5구간 점수 : 5/5");
+        log("감상 시간 (재생시간 / 영상길이): $time / ${_videoMetaData.duration.inSeconds}");
+        return 5;
+      } else {
+        return null;
+      }
+
+      log("5구간 : $a, $b, $c, $d, $e");
+      log("감상 시간 (재생시간 / 영상길이): $fifth / ${_videoMetaData.duration.inSeconds}");
+      return fifth.toInt();
+    } else if (time >= _videoMetaData.duration.inSeconds) {
+      print("시간 초과");
+      return 5;
+    }
   }
 
   void _showSnackBar(String message) {

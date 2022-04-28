@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:flutter_starter/ui/settings_ui.dart';
 import 'package:flutter_starter/ui/summary_ui.dart';
@@ -27,12 +28,12 @@ class _ChatScreenState extends State<ChatScreen>
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
-  double _panelHeightClosed = 250.0;
+  double _panelHeightClosed = 150.0;
 
   String text = '음성이나 텍스트를 입력해주세요';
   String message = '안녕하세요? \n대화형 문진에 오신걸 환영합니다.';
 
-  bool draggable = true;
+  bool draggable = false;
   bool isListening = false;
   bool isText = false;
   bool isCommand = false;
@@ -67,63 +68,31 @@ class _ChatScreenState extends State<ChatScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondaryColor,
-      appBar: AppBar(
-        title: Text(
-          '대화형 문진',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: null),
-        backgroundColor: primaryColor,
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Get.to(() => SettingsUI());
-              },
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   title: Text(
+      //     '대화형 문진',
+      //     style: TextStyle(
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      //   leading: IconButton(icon: Icon(Icons.menu), onPressed: null),
+      //   backgroundColor: primaryColor,
+      //   actions: [
+      //     Builder(
+      //       builder: (context) => IconButton(
+      //         icon: Icon(Icons.settings),
+      //         onPressed: () {
+      //           Get.to(() => SettingsUI());
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: SafeArea(
           child: Column(children: <Widget>[
         MessagesStream(),
-        welcomeMessage
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.keyboard),
-                    tooltip: '키보드 입력 버튼',
-                    onPressed: () {
-                      setState(() => this.isText = true);
-                      setState(() => this.draggable = false);
-                    },
-                  ),
-                  AvatarGlow(
-                      animate: isListening,
-                      endRadius: 33,
-                      glowColor:
-                          Theme.of(context).primaryColor.withOpacity(0.5),
-                      child: IconButton(
-                        icon: !isListening
-                            ? Icon(Icons.mic_none)
-                            : Icon(Icons.mic),
-                        onPressed: () {
-                          // maxScrolling();
-                          setState(() => isText = false);
-                          setState(() => text = '');
-                          _messageTextController.clear();
-                          toggleRecording();
-                        },
-                      )),
-                ],
-              )
-            : Text(""),
         buildSlidingPanel(context),
       ])),
     );
@@ -195,6 +164,7 @@ class _ChatScreenState extends State<ChatScreen>
                         setState(() => this.text = value.trim());
                         setState(() => this.isText = true);
                         setState(() => this.draggable = true);
+                        clearText;
                         bubbleGenerate(value, 1, '-');
                         toggleKeyboard();
                       },
@@ -215,6 +185,38 @@ class _ChatScreenState extends State<ChatScreen>
                               )))),
                     ],
                   ),
+            welcomeMessage
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.keyboard),
+                        tooltip: '키보드 입력 버튼',
+                        onPressed: () {
+                          setState(() => this.isText = true);
+                          setState(() => this.draggable = false);
+                        },
+                      ),
+                      AvatarGlow(
+                          animate: isListening,
+                          endRadius: 33,
+                          glowColor:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
+                          child: IconButton(
+                            icon: !isListening
+                                ? Icon(Icons.mic_none)
+                                : Icon(Icons.mic),
+                            onPressed: () {
+                              // maxScrolling();
+                              setState(() => isText = false);
+                              setState(() => text = '');
+                              _messageTextController.clear();
+                              toggleRecording();
+                            },
+                          )),
+                    ],
+                  )
+                : Text(""),
             SizedBox(
               height: 36.0,
             ),
