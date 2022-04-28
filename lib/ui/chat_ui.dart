@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -25,20 +26,24 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen>
     with SingleTickerProviderStateMixin {
+  BorderRadiusGeometry radius = BorderRadius.only(
+    topLeft: Radius.circular(24.0),
+    topRight: Radius.circular(24.0),
+  );
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
-  double _panelHeightClosed = 150.0;
+  double _panelHeightClosed = 120.0;
 
   String text = '음성이나 텍스트를 입력해주세요';
   String message = '안녕하세요? \n대화형 문진에 오신걸 환영합니다.';
 
-  bool draggable = false;
-  bool isListening = false;
+  bool draggable = true;
   bool isText = false;
   bool isCommand = false;
   bool isLoading = false;
   bool welcomeMessage = false;
+  bool isListening = false;
 
   int flow = 0;
   int yn = 0;
@@ -55,6 +60,7 @@ class _ChatScreenState extends State<ChatScreen>
   void initState() {
     animationController = AnimationController(vsync: this);
     _fabHeight = _initFabHeight;
+
     super.initState();
   }
 
@@ -90,6 +96,7 @@ class _ChatScreenState extends State<ChatScreen>
       //     ),
       //   ],
       // ),
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Column(children: <Widget>[
         MessagesStream(),
@@ -99,14 +106,12 @@ class _ChatScreenState extends State<ChatScreen>
   }
 
   Widget buildSlidingPanel(BuildContext context) {
-    final _messageTextController = TextEditingController();
-
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     return Material(
       child: Stack(alignment: Alignment.topCenter, children: <Widget>[
         SlidingUpPanel(
           maxHeight: _panelHeightOpen,
-          minHeight: _panelHeightClosed,
+          minHeight: !welcomeMessage ? _panelHeightClosed : 140,
           parallaxEnabled: true,
           parallaxOffset: .5,
           isDraggable: draggable,
@@ -117,6 +122,16 @@ class _ChatScreenState extends State<ChatScreen>
             _fabHeight =
                 pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
           }),
+          // collapsed: Container(
+          //   decoration:
+          //       BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
+          //   child: Center(
+          //     child: Text(
+          //       "This is the collapsed Widget",
+          //       style: TextStyle(color: Colors.white),
+          //     ),
+          //   ),
+          // ),
         ),
       ]),
     );
@@ -307,38 +322,75 @@ class _ChatScreenState extends State<ChatScreen>
   // function for user typing keyboard to send message
   // (It also includes : dio connection(http connection), create chat bubbles)
   Future toggleKeyboard() async {
-    additionalCommand(distType, flow);
-    straightCommand(text, isCommand);
+    // additionalCommand(distType, flow);
+    // straightCommand(text, isCommand);
     if (text != ''.trim()) {
       await dioConnection(bdi_call, email!, text).then((value) => setState(
           () => chat_list = [message = value?[0], distType = value?[1]]));
       maxScrolling();
-    } else {
-      setState(() => {isText = false});
+      return text;
     }
   }
 
-  // voice recognition function (it also includes : dio connection(http request), create chat bubbles)
   Future toggleRecording() => SpeechApi.toggleRecording(
         onResult: (text) => setState(() => this.text = text),
         onListening: (isListening) {
           setState(() => this.isListening = isListening);
-
           if (!isListening) {
-            Future.delayed(Duration(seconds: 3), () async {
+            Future.delayed(Duration(seconds: 2), () async {
+              bubbleGenerate(text, 1, '');
+              maxScrolling();
+
               await dioConnection(bdi_call, email!, text).then((value) =>
                   setState(() =>
                       chat_list = [message = value?[0], distType = value?[1]]));
               maxScrolling();
             });
           } else {
-            message = "";
+            setState(() => this.isListening = !isListening);
           }
         },
       );
 }
 
+//   Future toggleRecording() => SpeechApi.toggleRecording(
+//       onResult: (text) => setState(() => this.text = text),
+//       onListening: (isListening) {
+//         setState(() => this.isListening = !isListening);
+//         if (!isListening) {
+//           Future.delayed(Duration(seconds: 2), () async {
+//             bubbleGenerate(text, 1, '-');
+//             await dioConnection(bdi_call, email!, text)
+//                 .then((value) => setState(() => message = value![0]));
+//           });
+//         } else {
+//           message = "";
+//         }
+//       });
+// }
+// voice recognition function (it also includes : dio connection(http request), create chat bubbles)
+//   Future toggleRecording() => SpeechApi.toggleRecording(
+//         onResult: (text) => setState(() => this.text = text),
+//         onListening: (isListening) {
+//           setState(() => this.isListening = isListening);
+//
+//           if (!isListening) {
+//             Future.delayed(Duration(seconds: 3), () async {
+//               await dioConnection(bdi_call, email!, text).then((value) =>
+//                   setState(() =>
+//                       chat_list = [message = value?[0], distType = value?[1]]));
+//               maxScrolling();
+//             });
+//           } else {
+//             message = "";
+//           }
+//         },
+//       );
+// }
+
 Future<List?> welcome(String _email) async {
+  print("uid: ${currentUser?.uid}");
+
   var formData = FormData.fromMap({
     'input_text': "안녕",
     'present_bdi': '',
@@ -367,13 +419,14 @@ Future<List?> welcome(String _email) async {
 
     int yn = response.data["입력문장긍부정도"]["긍부정구분"]["분류 결과"];
     if (response.statusCode == 200) {
-      if (chat.contains('\n'))
+      if (chat.contains('\n')) {
         for (var i = 0; i < chat_list.length; i++) {
           print(i);
           bubbleGenerate(chat_list[i]!, 2, dist);
         }
-      else
+      } else {
         bubbleGenerate(chat, 2, dist);
+      }
       return [chat, next, yn];
     }
   } catch (e) {

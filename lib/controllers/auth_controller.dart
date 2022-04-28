@@ -12,7 +12,6 @@ import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:flutter_starter/ui/auth/auth.dart';
 
 class AuthController extends GetxController {
-
   static AuthController to = Get.find();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -53,7 +52,11 @@ class AuthController extends GetxController {
 
     if (_firebaseUser == null) {
       print('Send to signin');
-      Get.offAll(SignInUI(passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,));
+      Get.offAll(SignInUI(
+        passwordFocusNode: passwordFocusNode,
+        emailFocusNode: emailFocusNode,
+        nameFocusNode: nameFocusNode,
+      ));
     } else {
       Get.offAll(ChatScreen());
     }
@@ -163,7 +166,6 @@ class AuthController extends GetxController {
           _authUpdateUserNoticeTitle = 'auth.updateUserEmailInUse'.tr;
           _authUpdateUserNotice = 'auth.updateUserEmailInUse'.tr;
         } else {
-          
           _authUpdateUserNoticeTitle = 'auth.wrongPasswordNotice'.tr;
           _authUpdateUserNotice = 'auth.wrongPasswordNotice'.tr;
         }

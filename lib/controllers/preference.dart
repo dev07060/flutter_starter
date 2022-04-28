@@ -11,8 +11,11 @@ var currentUser = FirebaseAuth.instance.currentUser;
 int len = state_list!.length;
 
 String bdi_call = "bdiscale?email=";
-// String? email = '1111@gmail.com';
-String? email = currentUser?.email;
+String? email = '1111@gmail.com';
+// String? email = currentUser?.email;
+// String? demoEmail = '1111@gmail.com';
+String? demoPW = 'qqq111';
+
 String? name = currentUser?.displayName;
 
 List<String?> chat_list = [];
