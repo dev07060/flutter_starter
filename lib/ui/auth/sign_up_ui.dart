@@ -16,7 +16,6 @@ class SignUpUI extends StatelessWidget {
 
   get passwordFocusNode => null;
 
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
@@ -36,9 +35,7 @@ class SignUpUI extends StatelessWidget {
                     focusNode: nameFocusNode,
                     keyboardType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
-                    validator: (value) => Validator.name(
-                      name: value,
-                    ),
+                    validator: Validator().name,
                     label: 'Name',
                     hint: 'Enter your name',
                   ),
@@ -48,9 +45,7 @@ class SignUpUI extends StatelessWidget {
                     focusNode: emailFocusNode,
                     keyboardType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
-                    validator: (value) => Validator.email(
-                      email: value,
-                    ),
+                    validator: Validator().email,
                     label: 'Email',
                     hint: 'Enter your email',
                   ),
@@ -60,9 +55,10 @@ class SignUpUI extends StatelessWidget {
                     focusNode: passwordFocusNode,
                     keyboardType: TextInputType.text,
                     inputAction: TextInputAction.done,
-                    validator: (value) => Validator.password(
-                      password: value,
-                    ),
+                    validator: Validator().password,
+                    // validator: (value) => Validator.password(
+                    //   password: value,
+                    // ),
                     isObscure: true,
                     label: 'Password',
                     hint: 'Enter your password',
@@ -80,7 +76,9 @@ class SignUpUI extends StatelessWidget {
                   FormVerticalSpace(),
                   LabelButton(
                     labelText: 'auth.signInLabelButton'.tr,
-                    onPressed: () => Get.offAll(SignInUI(passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,)),
+                    onPressed: () => Get.offAll(SignInUI(
+                        // passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,
+                        )),
                   ),
                 ],
               ),

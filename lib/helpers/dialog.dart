@@ -5,6 +5,15 @@ var helloCommands = [
   '안녕하세요 \n고민이 있으시면 말씀해주세요!',
   '안녕하세요! \n잘 지내셨나요?',
 ];
+
+var showResult = [
+  '네 수집된 결과를 보여드릴게요 ',
+  '결과가 궁금하시군요 \n 결과를 확인해보세요',
+];
+
+var recommendVideo = [
+  '현재까지 추천된 영상을 보여드릴게요',
+];
 // 0: thrower / 1: receiver
 var additionalMessage = {
   // 16 : Sleep changes Topic

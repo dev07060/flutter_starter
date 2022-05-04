@@ -7,47 +7,15 @@ import 'package:flutter_starter/ui/auth/auth.dart';
 import 'package:flutter_starter/ui/components/components.dart';
 import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
-import 'package:kakao_flutter_sdk/all.dart';
-import 'package:flutter_starter/helpers/helpers.dart';
 
-class SignInUI extends StatefulWidget {
-  final FocusNode emailFocusNode;
-  final FocusNode passwordFocusNode;
-  final FocusNode nameFocusNode;
-
-  const SignInUI({
-    Key? key,
-    required this.emailFocusNode,
-    required this.passwordFocusNode,
-    required this.nameFocusNode
-  }) : super(key: key);
-
-  @override
-  SignInUIState createState() => SignInUIState();
-}
-
-class SignInUIState extends State<SignInUI> {
+class SignInUI extends StatelessWidget {
   final AuthController authController = AuthController.to;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  get nameFocusNode => null;
 
-  Future<void> _loginButtonPressed() async {
-    String authCode = await AuthCodeClient.instance.request();
-    var isKakaoInstalled = await isKakaoTalkInstalled();
-    var tokenManager = DefaultTokenManager();
+  get emailFocusNode => null;
 
-    if (isKakaoInstalled) {
-      authCode = await AuthCodeClient.instance.requestWithTalk();
-    } else {
-      authCode = await AuthCodeClient.instance.request();
-      var token = await AuthApi.instance.issueAccessToken(authCode);
-      tokenManager.setToken(token);
-      print(token);
-    }
-
-    print(authCode);
-  }
-
-  @override
+  get passwordFocusNode => null;
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
@@ -64,24 +32,23 @@ class SignInUIState extends State<SignInUI> {
                   SizedBox(height: 48.0),
                   CustomFormField(
                     controller: authController.emailController,
-                    focusNode: widget.emailFocusNode,
+                    focusNode: emailFocusNode,
                     keyboardType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
-                    validator: (value) => Validator.email(
-                      email: value,
-                    ),
+                    validator: Validator().email,
                     label: 'Email',
                     hint: 'Enter your email',
                   ),
                   FormVerticalSpace(),
                   CustomFormField(
                     controller: authController.passwordController,
-                    focusNode: widget.passwordFocusNode,
+                    focusNode: passwordFocusNode,
                     keyboardType: TextInputType.text,
                     inputAction: TextInputAction.done,
-                    validator: (value) => Validator.password(
-                      password: value,
-                    ),
+                    validator: Validator().email,
+                    // validator: (value) => Validator.password(
+                    //   password: value,
+                    // ),
                     isObscure: true,
                     label: 'Password',
                     hint: 'Enter your password',
@@ -94,14 +61,6 @@ class SignInUIState extends State<SignInUI> {
                           authController.signInWithEmailAndPassword(context);
                         }
                       }),
-                  ElevatedButton(
-                    onPressed: _loginButtonPressed,
-                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
-                    child:
-
-                    Text("카카오톡 로그인", style: TextStyle(color: Colors.black)),
-
-                  ),
                   FormVerticalSpace(),
                   LabelButton(
                     labelText: 'auth.resetPasswordLabelButton'.tr,

@@ -13,9 +13,9 @@ class AppRoutes {
     GetPage(
         name: '/signin',
         page: () => SignInUI(
-              passwordFocusNode: passwordFocusNode,
-              emailFocusNode: emailFocusNode,
-              nameFocusNode: nameFocusNode,
+            // passwordFocusNode: passwordFocusNode,
+            // emailFocusNode: emailFocusNode,
+            // nameFocusNode: nameFocusNode,
             )),
     GetPage(name: '/signup', page: () => SignUpUI()),
     GetPage(name: '/home', page: () => ChatScreen()),

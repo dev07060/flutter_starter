@@ -51,7 +51,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
 
   late PlayerState _playerState;
   late YoutubeMetaData _videoMetaData;
-  double _volume = 100;
+  double _volume = 30;
   bool _muted = false;
   bool _isPlayerReady = false;
 
@@ -67,9 +67,17 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     '9T5stD2Q2uY',
     'cJ1qOVJmMuY',
     'd6TA_STdVdc',
+    'd6TA_STdVdc',
     'lQj1ZwqLIwc',
     'Fxp0Vssfbyk',
   ];
+  void _start() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _timerCount++;
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -78,7 +86,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
       initialVideoId: _ids.first,
       flags: const YoutubePlayerFlags(
         mute: false,
-        autoPlay: true,
+        autoPlay: false,
         disableDragSeek: false,
         loop: false,
         isLive: false,
@@ -158,12 +166,15 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
             setState(() {
               _timerCount = 0;
             });
+          } else if (_playerState != PlayerState.unknown) {
+            _start;
           } else {
-            _timer = Timer.periodic(Duration(milliseconds: _ms), (timer) {
-              setState(() {
-                _timerCount++;
-              });
-            });
+            _start;
+            // _timer = Timer.periodic(Duration(milliseconds: _ms), (timer) {
+            //   setState(() {
+            //     _timerCount++;
+            //   });
+            // });
           }
           ;
         },
@@ -266,6 +277,8 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                             _timerCount = 0;
                           }),
                         }),
+                IconButton(
+                    icon: const Icon(Icons.favorite), onPressed: () => {}),
                 FullScreenButton(
                   controller: _controller,
                   color: Colors.blueAccent,
@@ -319,9 +332,10 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                   _space,
                   _text('채널명', _videoMetaData.author),
                   _space,
-                  _text('비디오 길이(초)', "${_videoMetaData.duration.inSeconds}"),
-                  _space,
-                  _text('재생 시간(초)', "${_timerCount}"),
+                  // _text('비디오 길이(초)', "${_videoMetaData.duration.inSeconds}"),
+                  // _space,
+                  // _text('재생 시간(초)', "${_timerCount}"),
+
                   // _text('Video Id', _videoMetaData.videoId),
                   // _space,
                   // Row(
@@ -353,27 +367,26 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                   // ),
                   // _space,
 
-                  _space,
-                  _space,
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 800),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: _getStateColor(_playerState),
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      _playerState.toString(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  // AnimatedContainer(
+                  //   duration: const Duration(milliseconds: 800),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20.0),
+                  //     color: _getStateColor(_playerState),
+                  //   ),
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     _playerState.toString(),
+                  //     style: const TextStyle(
+                  //       fontWeight: FontWeight.w300,
+                  //       color: Colors.white,
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
+            SizedBox(height: 370, child: _listBuild(context))
           ],
         ),
       ),
@@ -386,9 +399,10 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
       groupBy: (element) => element['Factor']!,
       groupSeparatorBuilder: (value) => Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          color: Colors.black,
-          child: Text(value)),
+          padding: const EdgeInsets.all(10),
+          color: Colors.grey,
+          child:
+              Text(value, style: TextStyle(color: Colors.black, fontSize: 17))),
       itemBuilder: (context, element) => Card(
             elevation: 4,
             child: ListTile(
@@ -403,16 +417,12 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
       text: TextSpan(
         text: '$title : ',
         style: const TextStyle(
-          color: Colors.blueAccent,
-          fontWeight: FontWeight.bold,
-        ),
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
         children: [
           TextSpan(
             text: value,
             style: const TextStyle(
-              color: Colors.blueAccent,
-              fontWeight: FontWeight.w300,
-            ),
+                color: Colors.black, fontWeight: FontWeight.w400, fontSize: 17),
           ),
         ],
       ),

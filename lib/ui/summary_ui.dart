@@ -357,7 +357,7 @@ class _SegmentsPageState extends State<ResultSummary>
                         ? Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Brian님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
+                              "$name님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
                               "${_rank?['cognitive'][1]}"
                               "과 같은 우울증의 원인 요소들을 "
                               "\n많이 느끼고 계신거 같아 보여요."
@@ -660,7 +660,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "대화 중에 제가 느낀 Brian님의 감정상태는"
+                        "대화 중에 제가 느낀 $name님의 감정상태는"
                         "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
                         "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
                         "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",

@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter/models/models.dart';
 import 'package:flutter_starter/ui/components/components.dart';
 
+import 'chatBubbleLoader.dart';
+
 final ScrollController _controller = new ScrollController();
 
 final StreamController<ChatMessageModel> _chatMessagesStreamController =
     StreamController<ChatMessageModel>.broadcast();
+
 final Stream<ChatMessageModel> _chatMessagesStream =
     _chatMessagesStreamController.stream;
 
@@ -18,12 +21,6 @@ void maxScrolling() {
     curve: Curves.easeOut,
   );
 }
-
-// void sendMessage(String s) async {
-//   s = s.trim();
-
-//   bubbleGenerate(s, 2, "");
-// }
 
 void bubbleGenerate(String _message, int _id, String _dist) {
   debugPrint(
@@ -46,6 +43,7 @@ class MessagesStream extends StatefulWidget {
 
 class _MessagesStreamState extends State<MessagesStream> {
   final List<ChatMessageModel> _allMessagesContainedInTheStream = [];
+  CrossFadeState _crossFadeState = CrossFadeState.showFirst;
 
   @override
   void initState() {
@@ -54,6 +52,18 @@ class _MessagesStreamState extends State<MessagesStream> {
       debugPrint('Value from controller: $streamedMessages');
       _allMessagesContainedInTheStream.add(streamedMessages);
     });
+
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   setState(() {
+    //     _crossFadeState = CrossFadeState.showSecond;
+    //   });
+    // });
+
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   setState(() {
+    //     _crossFadeState = CrossFadeState.showFirst;
+    //   });
+    // });
     super.initState();
   }
 
@@ -78,7 +88,20 @@ class _MessagesStreamState extends State<MessagesStream> {
                   chatMessageModelRecord:
                       _allMessagesContainedInTheStream[index],
                 );
-                // }
+                // return AnimatedCrossFade(
+                //     crossFadeState: _crossFadeState,
+                //     duration: const Duration(seconds: 2),
+                //     reverseDuration: const Duration(seconds: 1),
+                //     firstCurve: Curves.easeIn,
+                //     secondCurve: Curves.bounceOut,
+                //     firstChild: ChatBubbleLoader(
+                //       chatMessageModelRecord:
+                //           _allMessagesContainedInTheStream[index],
+                //     ),
+                //     secondChild: UserChatBubble(
+                //       chatMessageModelRecord:
+                //           _allMessagesContainedInTheStream[index],
+                //     ));
               } else {
                 print(snapshot.connectionState);
                 return Container();

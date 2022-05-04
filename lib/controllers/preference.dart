@@ -1,26 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rive/rive.dart';
 
-const url = 'http://3.35.147.41:5000/';
-// const url = "http://192.168.0.50:5000/";
-const state = 'state=';
-// const url = 'http://192.168.35.179:5000/';
 // const url = 'http://172.30.1.16:5000/';
+
+// const url = "http://192.168.56.1:5000/";
+const url = 'http://3.35.147.41:5000/';
+const state = 'state=';
 
 var currentUser = FirebaseAuth.instance.currentUser;
 
 int len = state_list!.length;
 
 String bdi_call = "bdiscale?email=";
-String? email = '1111@gmail.com';
-// String? email = currentUser?.email;
-// String? demoEmail = '1111@gmail.com';
-String? demoPW = 'qqq111';
 
+// String? email = '1111@gmail.com';
+// String? demoEmail = '1111@gmail.com';
+
+String? email = currentUser?.email;
 String? name = currentUser?.displayName;
 
 List<String?> chat_list = [];
 List? state_list = [];
 String? distType = 'small_talk';
+
+const riveFile = 'assets/animations/1683-3324-like-button.riv';
 
 const bdiDist = {
   1: "슬픔",

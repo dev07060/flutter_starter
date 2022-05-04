@@ -34,7 +34,8 @@ class ResetPasswordUI extends StatelessWidget {
                     iconPrefix: Icons.email,
                     labelText: 'auth.emailFormField'.tr,
                     validator: (value) {
-                      String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+                      String pattern =
+                          r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
                       RegExp regex = RegExp(pattern);
                       if (!regex.hasMatch(value!))
                         return 'validator.email'.tr;
@@ -44,7 +45,8 @@ class ResetPasswordUI extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) => null,
                     onSaved: (value) =>
-                        authController.emailController.text = value as String, maxLines: 1,
+                        authController.emailController.text = value as String,
+                    maxLines: 1,
                   ),
                   FormVerticalSpace(),
                   PrimaryButton(
@@ -76,7 +78,7 @@ class ResetPasswordUI extends StatelessWidget {
     if (authController.emailController.text == '') {
       return LabelButton(
         labelText: 'auth.signInonResetPasswordLabelButton'.tr,
-        onPressed: () => Get.offAll(SignInUI(passwordFocusNode: passwordFocusNode, emailFocusNode: emailFocusNode, nameFocusNode: nameFocusNode,)),
+        onPressed: () => Get.offAll(SignInUI()),
       );
     }
     return Container(width: 0, height: 0);

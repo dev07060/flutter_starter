@@ -53,10 +53,10 @@ class AuthController extends GetxController {
     if (_firebaseUser == null) {
       print('Send to signin');
       Get.offAll(SignInUI(
-        passwordFocusNode: passwordFocusNode,
-        emailFocusNode: emailFocusNode,
-        nameFocusNode: nameFocusNode,
-      ));
+          // passwordFocusNode: passwordFocusNode,
+          // emailFocusNode: emailFocusNode,
+          // nameFocusNode: nameFocusNode,
+          ));
     } else {
       Get.offAll(ChatScreen());
     }
