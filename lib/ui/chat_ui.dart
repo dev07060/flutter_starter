@@ -11,6 +11,7 @@ import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:flutter_starter/ui/settings_ui.dart';
 import 'package:flutter_starter/ui/summary_ui.dart';
 import 'package:flutter_starter/helpers/helpers.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -59,10 +60,12 @@ class _ChatScreenState extends State<ChatScreen>
   double level = 0.0;
   bool _hasSpeech = false;
   bool _logEvents = false;
+
   final TextEditingController _pauseForController =
       TextEditingController(text: '3');
   final TextEditingController _listenForController =
       TextEditingController(text: '30');
+
   String _currentLocaleId = '';
   List<LocaleName> _localeNames = [];
 
@@ -269,7 +272,7 @@ class _ChatScreenState extends State<ChatScreen>
           isDraggable: draggable,
           panelBuilder: (sc) => _panel(sc),
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+              topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
           onPanelSlide: (double pos) => setState(() {
             _fabHeight =
                 pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
@@ -299,11 +302,15 @@ class _ChatScreenState extends State<ChatScreen>
                           autocorrect: true,
                           enabled: isText ? true : false,
                           controller: _messageTextController,
-                          autofocus: false,
+                          autofocus: true,
+                          cursorColor: Colors.cyan,
+                          cursorHeight: 20,
                           decoration: InputDecoration(
-                              fillColor: Colors.white30,
-                              filled: true,
-                              border: InputBorder.none),
+                            disabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            fillColor: Colors.white30,
+                            filled: true,
+                          ),
                           onSubmitted: (value) {
                             setState(() => this.text = value.trim());
                             setState(() => this.isText = true);
@@ -361,6 +368,7 @@ class _ChatScreenState extends State<ChatScreen>
                             setState(() => {welcomeMessage = true});
                             // setState(() => {_hasSpeech = true});
                           },
+                          stopPauseOnTap: true,
                           repeatForever: true,
                         ),
                       ),
@@ -389,7 +397,7 @@ class _ChatScreenState extends State<ChatScreen>
                   width: 30,
                   height: 5,
                   decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.blueGrey[200],
                       borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
               ],
@@ -397,10 +405,6 @@ class _ChatScreenState extends State<ChatScreen>
             SizedBox(
               height: 18.0,
             ),
-
-            // !_hasSpeech & welcomeMessage
-            //     ? InitSpeechWidget(_hasSpeech, initSpeechState)
-            //     : Text(""),
             welcomeMessage
                 ? Column(children: <Widget>[
                     SizedBox(
@@ -431,7 +435,7 @@ class _ChatScreenState extends State<ChatScreen>
                             child: Padding(
                               padding: EdgeInsets.only(top: 17),
                               child: _button("맞춤영상", Icons.music_video_rounded,
-                                  Colors.grey, Colors.grey),
+                                  Colors.blue[400]!, Colors.blue[400]!),
                             )),
                         OutlinedButton(
                             style: OutlinedButton.styleFrom(
@@ -452,8 +456,8 @@ class _ChatScreenState extends State<ChatScreen>
                             },
                             child: Padding(
                               padding: EdgeInsets.only(top: 17),
-                              child: _button("More", Icons.settings,
-                                  Colors.grey, Colors.grey),
+                              child: _button("설정", Icons.settings, Colors.white,
+                                  Colors.grey),
                             )),
                       ],
                     ),
@@ -479,7 +483,7 @@ class _ChatScreenState extends State<ChatScreen>
           padding: const EdgeInsets.all(16.0),
           child: Icon(
             icon,
-            color: Colors.white,
+            color: label == '설정' ? Colors.grey[600] : Colors.white,
           ),
           decoration:
               BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [
@@ -494,9 +498,12 @@ class _ChatScreenState extends State<ChatScreen>
         ),
         Text(
           label,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
+          style: GoogleFonts.gowunDodum(
+            textStyle: (TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[900],
+            )),
           ),
         ),
       ],
@@ -536,7 +543,7 @@ Future<List?> welcome(String _email) async {
     Response response =
         await dio.post('bdiscale?email=$_email&state=start', data: formData);
 
-    String chat = response.data["출력"];
+    String? chat = response.data["출력"];
     String bdi = response.data["생성된 질문"]["질문"];
     String dist = response.data["생성된 질문"]["BDI"];
     String next = response.data["분석결과"]["다음 동작"];
@@ -544,14 +551,14 @@ Future<List?> welcome(String _email) async {
     state_list!.add(next);
     print(state_list);
 
-    if (chat.contains('\n')) chat_list = chat.split('\n');
+    if (chat!.contains('\n')) chat_list = chat.split('\n');
 
     int yn = response.data["입력문장긍부정도"]["긍부정구분"]["분류 결과"];
     if (response.statusCode == 200) {
       if (chat.contains('\n')) {
         for (var i = 0; i < chat_list.length; i++) {
           // Timer(const Duration(seconds: 1), () => {});
-          await Future.delayed(const Duration(milliseconds: 1500), () {
+          await Future.delayed(const Duration(milliseconds: 2500), () {
             print(i);
           });
 
@@ -603,13 +610,16 @@ Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
     if (response.statusCode == 200) {
       if (chat.contains('\n')) {
         for (var i = 0; i < chat_list.length; i++) {
-          await Future.delayed(const Duration(milliseconds: 1500), () {
+          await Future.delayed(const Duration(milliseconds: 2500), () {
             print(i);
           });
           // Timer(const Duration(seconds: 1), () => {});
           bubbleGenerate(chat_list[i]!, 2 + i, dist);
         }
       } else {
+        await Future.delayed(const Duration(milliseconds: 2500), () {
+          print("");
+        });
         bubbleGenerate(chat, 2, dist);
         return [chat, next, yn];
       }

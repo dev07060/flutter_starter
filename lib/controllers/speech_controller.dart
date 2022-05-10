@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 double minSoundLevel = 50000;
@@ -58,8 +59,35 @@ class InitSpeechWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.mic_none),
+          TextButton(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 7 / 10,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(15.0),
+                  topRight: Radius.circular(3.0),
+                ),
+                color: Colors.yellow[200],
+              ),
+              padding: EdgeInsets.symmetric(
+                vertical: 7,
+                horizontal: 16,
+              ),
+              child: Text(
+                "메타니언과 대화 해볼래요!",
+                style: GoogleFonts.gowunDodum(
+                  textStyle: (TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[900],
+                  )),
+                ),
+              ),
+            ),
             onPressed: hasSpeech ? null : initSpeechState,
           ),
           // TextButton(
@@ -103,11 +131,11 @@ class RecognitionResultsWidget extends StatelessWidget {
               Container(
                 color: Theme.of(context).selectedRowColor,
                 child: Center(
-                    // child: Text(
-                    //   lastWords,
-                    //   textAlign: TextAlign.center,
-                    // ),
-                    ),
+                  child: Text(
+                    '',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
               Positioned.fill(
                 bottom: 10,
@@ -117,18 +145,30 @@ class RecognitionResultsWidget extends StatelessWidget {
                     width: 40,
                     height: 40,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: .36,
-                            spreadRadius: level * 1.8,
-                            color: Colors.black.withOpacity(.05))
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
+                    decoration: !isText
+                        ? BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: .36,
+                                  spreadRadius: level * 2.5,
+                                  color: Colors.red.withOpacity(.33)),
+                              BoxShadow(
+                                  blurRadius: .36,
+                                  spreadRadius: level * 1.6,
+                                  color: Colors.red.withOpacity(.30)),
+                              BoxShadow(
+                                  blurRadius: .36,
+                                  spreadRadius: level * 0.8,
+                                  color: Colors.grey.withOpacity(.35))
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          )
+                        : null,
                     child: IconButton(
-                      icon: !isText ? Icon(Icons.mic) : Icon(Icons.keyboard),
+                      icon: !isText
+                          ? Icon(Icons.mic, color: Colors.red[400])
+                          : Icon(Icons.keyboard),
                       onPressed: !isText ? () => null : () => {},
                     ),
                   ),

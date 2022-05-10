@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 
 // const url = 'http://172.30.1.16:5000/';
@@ -13,10 +14,10 @@ int len = state_list!.length;
 
 String bdi_call = "bdiscale?email=";
 
-// String? email = '1111@gmail.com';
+String? email = 'testAccount'.tr;
 // String? demoEmail = '1111@gmail.com';
 
-String? email = currentUser?.email;
+// String? email = currentUser?.email;
 String? name = currentUser?.displayName;
 
 List<String?> chat_list = [];

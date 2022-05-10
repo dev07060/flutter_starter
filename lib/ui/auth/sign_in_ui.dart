@@ -45,7 +45,7 @@ class SignInUI extends StatelessWidget {
                     focusNode: passwordFocusNode,
                     keyboardType: TextInputType.text,
                     inputAction: TextInputAction.done,
-                    validator: Validator().email,
+                    validator: Validator().password,
                     // validator: (value) => Validator.password(
                     //   password: value,
                     // ),
