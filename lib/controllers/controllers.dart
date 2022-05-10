@@ -5,3 +5,4 @@ export 'voice_controller.dart';
 export 'preference.dart';
 export 'speech_controller.dart';
 export 'utils.dart';
+export 'chart_controller.dart';

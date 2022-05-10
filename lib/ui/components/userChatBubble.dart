@@ -63,21 +63,21 @@ class UserChatBubble extends StatelessWidget {
                 borderRadius: chatMessageModelRecord.id > 1
                     ? chatMessageModelRecord.id == 2
                         ? BorderRadius.only(
-                            bottomRight: Radius.circular(15.0),
-                            bottomLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
                             topLeft: Radius.circular(6.0),
-                            topRight: Radius.circular(15.0),
+                            bottomLeft: Radius.circular(15.0),
                           )
                         : BorderRadius.only(
-                            bottomLeft: Radius.circular(15.0),
-                            bottomRight: Radius.circular(15.0),
+                            bottomLeft: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
                             topRight: Radius.circular(15.0),
                             topLeft: Radius.circular(3.0),
                           )
                     : BorderRadius.only(
-                        bottomLeft: Radius.circular(15.0),
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0),
                         bottomRight: Radius.circular(15.0),
-                        topLeft: Radius.circular(15.0),
                         topRight: Radius.circular(3.0),
                       ),
                 color: chatMessageModelRecord.id > 1

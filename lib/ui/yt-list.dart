@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -54,22 +56,60 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
   double _volume = 30;
   bool _muted = false;
   bool _isPlayerReady = false;
+  bool _isFavorite = false;
+  bool _isExcept = false;
 
   late Timer _timer;
   bool _isRunning = false;
   int _timerCount = 0;
   int _ms = 1000;
 
+  final List<Map<String, String>> elements = [
+    {
+      'factor': 'video.category1'.tr,
+      'title': 'video_title1'.tr,
+      'id': 'vid_1'.tr,
+      'thumbnail': 'video_thumbnail1'.tr
+    },
+    {
+      'factor': 'video.category2'.tr,
+      'title': 'video_title2'.tr,
+      'id': 'vid_2'.tr,
+      'thumbnail': 'video_thumbnail2'.tr
+    },
+    {
+      'factor': 'video.category3'.tr,
+      'title': 'video_title3'.tr,
+      'id': 'vid_3'.tr,
+      'thumbnail': 'video_thumbnail3'.tr
+    },
+    {
+      'factor': 'video.category4'.tr,
+      'title': 'video_title4'.tr,
+      'id': 'vid_4'.tr,
+      'thumbnail': 'video_thumbnail4'.tr
+    },
+    {
+      'factor': 'video.category5'.tr,
+      'title': 'video_title5'.tr,
+      'id': 'vid_5'.tr,
+      'thumbnail': 'video_thumbnail5'.tr
+    },
+    {
+      'factor': 'video.category6'.tr,
+      'title': 'video_title6'.tr,
+      'id': 'vid_6'.tr,
+      'thumbnail': 'video_thumbnail6'.tr
+    },
+    // {'Factor': 'F', '제목': '힐링영상', 'id': ''},
+  ];
   final List<String> _ids = [
-    'Z3RGo_CWuMc',
-    'Hv8h-MEBb9I',
-    'j4dUHTbw1R0',
-    '9T5stD2Q2uY',
-    'cJ1qOVJmMuY',
-    'd6TA_STdVdc',
-    'd6TA_STdVdc',
-    'lQj1ZwqLIwc',
-    'Fxp0Vssfbyk',
+    'vid_1'.tr,
+    'vid_2'.tr,
+    'vid_3'.tr,
+    'vid_4'.tr,
+    'vid_5'.tr,
+    'vid_6'.tr,
   ];
   void _start() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -182,7 +222,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
           _countTime(_timerCount);
           _controller
               .load(_ids[(_ids.indexOf(data.videoId) + 1) % _ids.length]);
-          _showSnackBar('Next Video Started!');
+          _showSnackBar('Next Video Started!', 'notice');
           setState(() {
             _timerCount = 0;
           });
@@ -204,12 +244,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
         //   actions: [
         //     IconButton(
         //       icon: const Icon(Icons.video_library),
-        //       onPressed: () => Navigator.push(
-        //         context,
-        //         CupertinoPageRoute(
-        //           builder: (context) => VideoList(),
-        //         ),
-        //       ),
+        //       onPressed: () {},
         //     ),
         //   ],
         // ),
@@ -278,11 +313,43 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                           }),
                         }),
                 IconButton(
-                    icon: const Icon(Icons.favorite), onPressed: () => {}),
-                FullScreenButton(
-                  controller: _controller,
-                  color: Colors.blueAccent,
-                ),
+                    color: _isFavorite ? Colors.red : null,
+                    icon: _isFavorite
+                        ? Icon(Icons.favorite)
+                        : Icon(Icons.favorite_outline),
+                    onPressed: !_isExcept
+                        ? () => {
+                              setState(() {
+                                !_isFavorite
+                                    ? _isFavorite = true
+                                    : _isFavorite = false;
+                              }),
+                              _isFavorite
+                                  ? _showSnackBar('찜 컨텐츠로 저장되었습니다', 'notice')
+                                  : _showSnackBar('찜 컨텐츠에서 삭제되었습니다', 'notice'),
+                            }
+                        : () {
+                            _showSnackBar('먼저 제외 컨텐츠에서 삭제하세요', 'warning');
+                          }),
+                IconButton(
+                    color: _isExcept ? Colors.blue[400] : null,
+                    icon: _isExcept
+                        ? Icon(Icons.thumb_down)
+                        : Icon(Icons.thumb_down_outlined),
+                    onPressed: !_isFavorite
+                        ? () => {
+                              setState(() {
+                                !_isExcept
+                                    ? _isExcept = true
+                                    : _isExcept = false;
+                              }),
+                              _isExcept
+                                  ? _showSnackBar('제외 컨텐츠로 저장되었습니다', 'notice')
+                                  : _showSnackBar('제외 컨텐츠에서 삭제되었습니다', 'notice'),
+                            }
+                        : () {
+                            _showSnackBar('먼저 찜 컨텐츠에서 삭제하세요', 'warning');
+                          }),
               ],
             ),
             _space,
@@ -386,7 +453,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                 ],
               ),
             ),
-            SizedBox(height: 370, child: _listBuild(context))
+            SizedBox(height: 350, child: _listBuild(context))
           ],
         ),
       ),
@@ -396,19 +463,47 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
   Widget _listBuild(BuildContext context) => GroupedListView<dynamic, String>(
       useStickyGroupSeparators: true,
       elements: elements,
-      groupBy: (element) => element['Factor']!,
+      groupBy: (element) => element['factor']!,
       groupSeparatorBuilder: (value) => Container(
           width: double.infinity,
           padding: const EdgeInsets.all(10),
-          color: Colors.grey,
-          child:
-              Text(value, style: TextStyle(color: Colors.black, fontSize: 17))),
+          color: Colors.blue[200],
+          child: Text(
+            value,
+            style: GoogleFonts.gowunDodum(
+              textStyle: (TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[900],
+              )),
+            ),
+          )),
       itemBuilder: (context, element) => Card(
             elevation: 4,
             child: ListTile(
               contentPadding: const EdgeInsets.all(12.0),
-              leading: const Icon(Icons.account_circle, size: 15),
-              title: Text(element['제목']!),
+              leading: Image(
+                  image: NetworkImage(
+                element['thumbnail'],
+              )),
+              title: TextButton(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                  child: Text(
+                    element['title']!,
+                    style: GoogleFonts.gowunDodum(
+                      textStyle: (TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[900],
+                      )),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  _controller.load(element['id']!);
+                },
+              ),
             ),
           ));
 
@@ -416,13 +511,25 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     return RichText(
       text: TextSpan(
         text: '$title : ',
-        style: const TextStyle(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+        style: GoogleFonts.gowunDodum(
+          textStyle: (TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[900],
+          )),
+        ),
+        // const TextStyle(
+        //     color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
         children: [
           TextSpan(
             text: value,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w400, fontSize: 17),
+            style: GoogleFonts.gowunDodum(
+              textStyle: (TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[900],
+              )),
+            ),
           ),
         ],
       ),
@@ -467,7 +574,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                   if (action == 'CUE') _controller.cue(id);
                   FocusScope.of(context).requestFocus(FocusNode());
                 } else {
-                  _showSnackBar('Source can\'t be empty!');
+                  _showSnackBar('Source can\'t be empty!', 'warning');
                 }
               }
             : null,
@@ -531,18 +638,23 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     }
   }
 
-  void _showSnackBar(String message) {
+  void _showSnackBar(String message, String action) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: Duration(milliseconds: 1000),
         content: Text(
           message,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             fontSize: 16.0,
           ),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: action == 'notice'
+            ? Colors.blueAccent
+            : action == 'warning'
+                ? Colors.red[400]
+                : Colors.green[400],
         behavior: SnackBarBehavior.floating,
         elevation: 1.0,
         shape: RoundedRectangleBorder(

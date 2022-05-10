@@ -20,7 +20,7 @@ dependencies:
   # google_sign_in:
   # apple_sign_in:
   get: ^4.6.1
-  get_storage: ^2.0.2
+  get_storage: ^2.0.3
   grouped_list: ^4.2.0
   avatar_glow: ^2.0.2
   crypto: ^3.0.1
@@ -44,6 +44,9 @@ dependencies:
   animated_text_kit: ^4.2.1
   toggle_switch: ^2.0.1
   google_fonts: ^2.3.2
+  auto_size_text: ^3.0.0
+  syncfusion_flutter_core: ^20.1.52
+  syncfusion_flutter_sliders: ^20.1.52
 
 
 dependency_overrides:

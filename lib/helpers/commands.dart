@@ -15,7 +15,7 @@ Future straightCommand(String _userInput, bool _isCommand) async {
     return bubbleGenerate(
         (helloCommands..shuffle()).first, 2, 'straightCommand');
   } else if (_userInput.contains("결과창")) {
-    return Get.to(() => ResultSummary());
+    return Get.to(ResultSummary());
   } else if (_userInput.contains("영상 추천")) {
     return Get.to(YoutubePlayerList());
   }

@@ -64,9 +64,49 @@ class Localization extends Translations {
           'speech.error':
               "There's an error occurred on Speech recognition function",
           'speech.comment': "Click mic icon and say something.",
-          'title.guilt' : 'How to Eliminate Guilt',
+          'title.guilt': 'How to Eliminate Guilt',
           'close': 'close',
-          'solution.over10.guilt':"Everyone experiences guilt at one time or another during their life. Guilt is a feeling of responsibility for something bad or wrong. Guilt has various sources. For example, it may come from thinking that you have done something wrong, caused someone harm or did nothing when you should have acted. It can also come from a sense that you have succeeded when others have failed, as in the case of survivor's guilt. Guilt is not always a bad thing, since it often promotes remorse, changes in future behavior, and feelings of empathy. At the same time, however, guilt can become a problem when it is unproductive and does not help change behavior but instead causes a guilt-and-shame cycle."
+          'solution.over10.guilt':
+              "Everyone experiences guilt at one time or another during their life. Guilt is a feeling of responsibility for something bad or wrong. Guilt has various sources. For example, it may come from thinking that you have done something wrong, caused someone harm or did nothing when you should have acted. It can also come from a sense that you have succeeded when others have failed, as in the case of survivor's guilt. Guilt is not always a bad thing, since it often promotes remorse, changes in future behavior, and feelings of empathy. At the same time, however, guilt can become a problem when it is unproductive and does not help change behavior but instead causes a guilt-and-shame cycle.",
+          'testAccount': 'negative@test.net',
+          'video.category1': '명상',
+          'video.category2': '수면부족',
+          'video.category3': '기력상실',
+          'video.category4': '기력상실',
+          'video.category5': '기력상실',
+          'video.category6': '기력상실',
+          'vid_1': 'DB9JEy7s2oY',
+          'vid_2': 'coT5ycj9i7c',
+          'vid_3': 'wQ9E3g5ACH8',
+          'vid_4': 'iyOlubUN-cE',
+          'vid_5': '2nqB5TjWzcQ',
+          'vid_6': 'iUbqSELh2vs',
+          'video_title1': '마음이 힘든 날 위로가 필요할때 (15분 명상 가이드)',
+          'video_title2': '지치고 힘든 마음돌보기 명상 ㅣ 자기돌봄 명상 ㅣ 마음위로',
+          'video_title3': '마음이 지칠때 사는게 힘들때 위로가 되는 명상 ㅣ 다시 살아갈 힘을 얻기',
+          'video_title4':
+              "(요가은) 지친 마음을 달래는 10분 요가 / 우울증 명상, 10분명상, 공황장애, 자존감",
+          'video_title5':
+              "(요가은) 공황장애 극복을 위한 호흡명상 / 불안증명상, 치료명상, 우울증명상, 요가명상",
+          'video_title6': "불안감, 걱정, 두려움 해소하는 위로명상 l 어렵지 않은 명상의 시작",
+          'video_thumbnail1': 'http://i.ytimg.com/vi/coT5ycj9i7c/default.jpg',
+          'video_thumbnail2': 'http://i.ytimg.com/vi/s7p0_z5C4fs/default.jpg',
+          'video_thumbnail3': 'http://i.ytimg.com/vi/wQ9E3g5ACH8/default.jpg',
+          'video_thumbnail4': 'http://i.ytimg.com/vi/iyOlubUN-cE/default.jpg',
+          'video_thumbnail5': 'http://i.ytimg.com/vi/2nqB5TjWzcQ/default.jpg',
+          'video_thumbnail6': 'http://i.ytimg.com/vi/iUbqSELh2vs/default.jpg',
+          'factor1.title': '원인을 찾았어요!',
+          'factor1.title2': '우울증을 느낄 수 있는 요소: 피로, 집중력 저하',
+          'factor1.text':
+              "피로가 지속되고 집중력이 저하되신거 같아요 \n이런 상태가 2주 이상 지속되면 위험합니다\n숙면을 취하지 못하는 원인을 찾아보세요.\n단순히 스트레스가 심하신 것이라면\n추천해드린 컨텐츠를 통해 숙면을 취헤보세요",
+          'factor2.title': '슬픈 감정이 감지 됐어요',
+          'factor2.title2': '요즘 자꾸 슬픈 생각이 드시나요?',
+          'factor2.text':
+              '피로감과 집중력 저하의 원인이 슬픈 감정 때문인가요?\n 슬픈 감정을 느끼는 원인이 무엇인지 생각해봐요\n슬픈 감정으로 인해 증상이 더 악화될 수 있어요',
+          'factor3.title': '자주 깜빡깜빡 하시진 않나요?',
+          'factor3.title2': '기억력 감퇴가 생길 수 있어요',
+          'factor3.text':
+              "지금같은 상태가 기억력이 점점 감퇴 되시나요?\n지금은 일시적이지만 지속되면 위험합니다\n숙면을 취하시고 스트레스의 원인을 찾아보세요\n혼자서 해결할 수 없다면 전문가의 상담도 좋습니다.",
         },
         'ko': {
           'auth.signInButton': '로그인',
@@ -123,7 +163,7 @@ class Localization extends Translations {
           'validator.amount': '특수기호 없이 숫자만 입력해주세요.',
           'speech.error': '음성인식 기능에 오류가 발생하였습니다.',
           'speech.comment': '마이크 버튼을 눌러 말씀하세요.',
-          'title.guilt' : '죄책감 떨쳐내기',
+          'title.guilt': '죄책감 떨쳐내기',
           //  10점 이상
           'solution.over10.guilt':
               '죄책감은 모든 사람이 언젠가는 한 번쯤은 경험하는 자연스러운 인간적인 감정이다.\n 하지만 많은 사람들은 극심한 또는 만성적인 자책감이나 수치심 때문에 큰 스트레스를 받기도 한다. \n합리적인 죄책감이란 타인이 자신의 행동, 결정 기타 잘못에 의해 부정적으로 영향을 받아 이에 책임을 져야 할 때 느끼는 죄책감이다. \n이는 건강한 죄책감으로, 잘못한 점을 고치도록 장려하여, 친밀감을 조성하며, 공통된 책임감을 느끼게 할 수 있다. \n한편, 불필요한 죄책감이란, 다른 사람의 행동이나 삶, 자신이 통제 할 수 없는 것 그리고 대부분의 상황에서 발생하는 여파와 같이 자신이 책임 질 수 없는 것들에 대한 죄책감이다. \n이러한 종류의 죄책감은 우리로 하여금 인지한 실패에 대해 곱씹게 하여, 수치심과 억울한 마음을 불러일으킨다. \n당신의 죄책감이 과거의 잘못에서 비롯된 것이건, 우연히 발생한 것이건 간에 이 감정을 해소 할 수 있는 방법이 있다.',
@@ -149,7 +189,49 @@ class Localization extends Translations {
           'cause.over10.self-criticism': '부정적인 언행',
           'cause.over10.past-failure': '정신적 트라우마',
           'cause.over10.punishment-feeling': '지나친 자기관리',
-          'close': '닫기'
+          'close': '닫기',
+          'video.category1': '명상',
+          'video.category2': '명상',
+          'video.category3': '명상',
+          'video.category4': '명상',
+          'video.category5': '명상',
+          'video.category6': '명상',
+          'testAccount': 'positive@test.net',
+          'vid_1': 'Rl6_OzuG73s',
+          'vid_2': 's7p0_z5C4fs',
+          'vid_3': 'dZewQEbQQM0',
+          'vid_4': 'QJAKxe5Ij2Q',
+          'vid_5': '2nqB5TjWzcQ',
+          'vid_6': 'iUbqSELh2vs',
+          'video_title1': "마음챙김 명상을 시작하는 방법 | 초보자 명상 가이드 10분 (자세, 호흡법)",
+          'video_title2': '우울함을 비우는 10분 회복명상 l 어렵지않은 명상의 시작',
+          'video_title3': "5분 호흡명상 - 뇌를 위한 최고의 휴식법 (스트레스 해소, 뇌 피로회복)",
+          'video_title4': "(요가은) 호흡 명상 / 집중력향상, 스트레스완화, 긴장완화, 요가명상",
+          'video_title5':
+              "(요가은) 공황장애 극복을 위한 호흡명상 / 불안증명상, 치료명상, 우울증명상, 요가명상",
+          'video_title6': "불안감, 걱정, 두려움 해소하는 위로명상 l 어렵지 않은 명상의 시작",
+
+          'video_thumbnail1': 'http://i.ytimg.com/vi/Rl6_OzuG73s/default.jpg',
+          'video_thumbnail2': 'http://i.ytimg.com/vi/s7p0_z5C4fs/default.jpg',
+          'video_thumbnail3': 'http://i.ytimg.com/vi/dZewQEbQQM0/default.jpg',
+          'video_thumbnail4': 'http://i.ytimg.com/vi/QJAKxe5Ij2Q/default.jpg',
+          'video_thumbnail5': 'http://i.ytimg.com/vi/2nqB5TjWzcQ/default.jpg',
+          'video_thumbnail6': 'http://i.ytimg.com/vi/iUbqSELh2vs/default.jpg',
+
+          'factor1.title': '아주 건강하시군요!',
+          'factor1.title2': '우울증 증상은 찾아볼 수 없어요',
+          'factor1.text':
+              '김민재님의 마음 건강은 아주 건강합니다. \n 계속해서 좋은 건강을 유지하실 수 있게 \n 몇가지 명상 자료들을 추천 드릴게요',
+
+          'factor2.title': '감정은 아주 행복해보여요',
+          'factor2.title2': '요즘 좋은 일 있으시군요?',
+          'factor2.text':
+              '감정에 어떤 우울이나 슬플도 느껴지지 않았어요\n 계속해서 행복한 감정을 유지하실 수 있게\n 대화를 통해 컨텐츠를 추천해 드릴게요',
+
+          'factor3.title': '식욕에 변화가 있으신가요?',
+          'factor3.title2': '체중이 조금 불어나셨나요?',
+          'factor3.text':
+              '요즘 의욕도 식욕도 왕성해지는 시기신가요? \n 하지만 가끔은 조절하여 드신다면 \n 아주 건강한 상태를 유지하실 수 있으실거 같아요',
         },
       };
 }

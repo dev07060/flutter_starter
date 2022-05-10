@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_starter/ui/ui.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,6 +11,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blinking_text/blinking_text.dart';
+import 'package:get/get.dart' hide Response;
+
+///Core theme import
+import 'package:syncfusion_flutter_core/theme.dart';
+
+///Slider import
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class ResultSummary extends StatefulWidget {
   const ResultSummary({Key? key}) : super(key: key);
@@ -44,7 +52,7 @@ class _SegmentsPageState extends State<ResultSummary>
 
   List _chart = [];
   List _date = [];
-
+  List _factor = ['집중력 저하', '피로감', '기력 상실'];
   Map<String, dynamic>? _scores;
   Map<String, dynamic>? _rank;
   Map<String, dynamic>? resultList;
@@ -227,7 +235,7 @@ class _SegmentsPageState extends State<ResultSummary>
                         ),
                         SizedBox(height: 10),
                         BlinkText(resultList?["notice"] ?? '',
-                            beginColor: _pointerValue > 10 && _pointerValue < 18
+                            beginColor: _pointerValue > 10 && _pointerValue < 20
                                 ? Colors.greenAccent
                                 : _pointerValue >= 18 && _pointerValue < 29
                                     ? Colors.orangeAccent
@@ -254,7 +262,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                   activeTickMarkColor: Colors.white,
                                   showValueIndicator: ShowValueIndicator.always,
                                   activeTrackColor:
-                                      _pointerValue > 10 && _pointerValue < 18
+                                      _pointerValue > 10 && _pointerValue < 20
                                           ? Colors.greenAccent
                                           : _pointerValue >= 18 &&
                                                   _pointerValue < 29
@@ -284,7 +292,7 @@ class _SegmentsPageState extends State<ResultSummary>
                           child: AbsorbPointer(
                             child: Slider(
                                 label: _pointerValue.toString(),
-                                divisions: 6,
+                                divisions: 4,
                                 value: _pointerValue,
                                 min: 0,
                                 max: 63,
@@ -336,7 +344,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     // 인지영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("원인을 파악했어요 🕵🏻‍♂️",
+                      child: Text("factor1.title".tr,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -346,7 +354,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("우울증을 느낄 요소가 많았어요",
+                      child: Text("factor1.title2".tr,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -356,12 +364,17 @@ class _SegmentsPageState extends State<ResultSummary>
                     !isLoading
                         ? Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              "$name님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
-                              "${_rank?['cognitive'][1]}"
-                              "과 같은 우울증의 원인 요소들을 "
-                              "\n많이 느끼고 계신거 같아 보여요."
-                              "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
+                            child: AutoSizeText(
+                              'factor1.text'.tr,
+                              minFontSize: 10,
+                              stepGranularity: 10,
+                              maxLines: 6,
+                              overflow: TextOverflow.fade,
+                              // "$name님과 대화 중에 수집한 정보에 의하면 \n${_rank?['cognitive'][0]}, "
+                              // "${_rank?['cognitive'][1]}"
+                              // "과 같은 우울증의 원인 요소들을 "
+                              // "\n많이 느끼고 계신거 같아 보여요."
+                              // "\n주변 환경, 과거의 일이 관련이 있는 경우가 많아요",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -430,7 +443,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                         Expanded(
                                           child: BarChart(
                                             BarChartData(
-                                              maxY: 4,
+                                              maxY: 100,
                                               barTouchData: BarTouchData(
                                                 touchTooltipData:
                                                     BarTouchTooltipData(
@@ -450,7 +463,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                                                   rod,
                                                               int rodIndex) =>
                                                           BarTooltipItem(
-                                                    rod.y.toStringAsFixed(1),
+                                                    "${rod.y.toStringAsFixed(1)}%",
                                                     const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -507,17 +520,17 @@ class _SegmentsPageState extends State<ResultSummary>
                                                         return _rank?[
                                                                     'cognitive']
                                                                 [2] ??
-                                                            0;
+                                                            0.0;
                                                       case 1:
                                                         return _rank?[
                                                                     'cognitive']
                                                                 [1] ??
-                                                            0;
+                                                            0.0;
                                                       case 0:
                                                         return _rank?[
                                                                     'cognitive']
                                                                 [0] ??
-                                                            0;
+                                                            0.0;
                                                       default:
                                                         return '';
                                                     }
@@ -568,7 +581,7 @@ class _SegmentsPageState extends State<ResultSummary>
                           ),
                     Align(
                       alignment: Alignment.center,
-                      child: Text("요소별 측정치는 수치가 높을수록 위험한 요소입니다",
+                      child: Text("요소별 측정치는 수치(%)가 높을수록 위험한 요소입니다",
                           style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey,
@@ -595,7 +608,7 @@ class _SegmentsPageState extends State<ResultSummary>
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                    _scores?['cognitive'][0].toStringAsFixed(1),
+                                    "${_scores?['cognitive'][0].toStringAsFixed(1)}%",
                                     style: TextStyle(
                                         fontSize: 25, color: Colors.black)),
                               )),
@@ -622,7 +635,7 @@ class _SegmentsPageState extends State<ResultSummary>
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                    _scores?['cognitive'][1].toStringAsFixed(1),
+                                    "${_scores?['cognitive'][1].toStringAsFixed(1)}%",
                                     style: TextStyle(
                                         fontSize: 25, color: Colors.black)),
                               )),
@@ -636,7 +649,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("혹시 요즘..",
+                      child: Text("factor2.title".tr,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -650,7 +663,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("슬픈 감정을 자주 느끼시나요?",
+                      child: Text('factor2.title2'.tr,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -659,11 +672,12 @@ class _SegmentsPageState extends State<ResultSummary>
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "대화 중에 제가 느낀 $name님의 감정상태는"
-                        "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
-                        "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
-                        "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
+                      child: AutoSizeText(
+                        'factor2.text'.tr,
+                        // "대화 중에 제가 느낀 $name님의 감정상태는"
+                        // "\n슬픈 감정을 자주 느끼시는 걸로 보여요"
+                        // "\n떨쳐내려고 하기보다 조용한 노래를 들으며"
+                        // "\n지금의 슬픈 감정의 원인이 무엇인지 생각해봐요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -679,7 +693,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     // 감정영역 요소
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("자주 깜빡깜빡 하신다면🤦🏻",
+                      child: Text('factor3.title'.tr,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 23,
@@ -689,7 +703,7 @@ class _SegmentsPageState extends State<ResultSummary>
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("내 기억력 누가 훔쳐갔지?",
+                      child: Text('factor3.title2'.tr,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17,
@@ -698,10 +712,11 @@ class _SegmentsPageState extends State<ResultSummary>
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "집중력과 기억력에 문제가 생기신거 같네요"
-                        "\n심한 스트레스나 우울증에도 이런 증상이 나타나요"
-                        "\n몇가지 방법으로 다시 되찾을 수 있어요",
+                      child: AutoSizeText(
+                        'factor3.text'.tr,
+                        // "집중력과 기억력에 문제가 생기신거 같네요"
+                        // "\n심한 스트레스나 우울증에도 이런 증상이 나타나요"
+                        // "\n몇가지 방법으로 다시 되찾을 수 있어요",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
