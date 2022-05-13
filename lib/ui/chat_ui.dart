@@ -244,9 +244,10 @@ class _ChatScreenState extends State<ChatScreen>
               backgroundColor: Colors.blueGrey,
               mini: true,
               child: Icon(Icons.arrow_right, color: Colors.white),
-              onPressed: () => {
-                    setState(() => {welcomeMessage = true})
-                  }),
+              onPressed: () async {
+                await welcome(email!);
+                setState(() => {welcomeMessage = true});
+              }),
       backgroundColor: Colors.blueGrey[200],
       body: SafeArea(
           child: Column(children: <Widget>[
@@ -441,7 +442,9 @@ class _ChatScreenState extends State<ChatScreen>
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(width: 0.0, color: Colors.white),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(HomePage());
+                            },
                             child: Padding(
                               padding: EdgeInsets.only(top: 17),
                               child: _button("감정상태", Icons.emoji_emotions,
@@ -463,15 +466,16 @@ class _ChatScreenState extends State<ChatScreen>
                     ),
                   ])
                 : Text(""),
-            SizedBox(
-              height: 36.0,
-            ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[],
-              ),
-            ),
+
+            // SizedBox(
+            //   height: 36.0,
+            // ),
+            // Container(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: <Widget>[],
+            //   ),
+            // ),
           ],
         ));
   }

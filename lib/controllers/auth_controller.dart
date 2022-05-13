@@ -29,9 +29,7 @@ class AuthController extends GetxController {
   void onReady() async {
     //run every time auth state changes
     ever(firebaseUser, handleAuthChanged);
-
     firebaseUser.bindStream(user);
-
     super.onReady();
   }
 
@@ -52,13 +50,14 @@ class AuthController extends GetxController {
 
     if (_firebaseUser == null) {
       print('Send to signin');
-      Get.offAll(SignInUI(
+      Get.offAll(() => SignInUI(
           // passwordFocusNode: passwordFocusNode,
           // emailFocusNode: emailFocusNode,
           // nameFocusNode: nameFocusNode,
           ));
     } else {
-      Get.offAll(ChatScreen());
+      Get.offAll(() => ChatScreen());
+      // Get.offAll(ChatScreen());
     }
   }
 

@@ -1,5 +1,5 @@
-import 'package:transition_location_ui/model/location.dart';
-import 'package:transition_location_ui/model/review.dart';
+import 'package:flutter_starter/models/location.dart';
+import 'package:flutter_starter/models/review.dart';
 
 class HeroTag {
   static String image(String urlImage) => urlImage;

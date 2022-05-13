@@ -60,7 +60,4 @@ flutter:
   uses-material-design: true
   assets:
     - google_fonts/
-    - assets/images/default.png
-    - assets/images/defaultDark.png
-    - assets/images/model.png
-    - assets/images/metaIcon.png
+    - assets/images/
