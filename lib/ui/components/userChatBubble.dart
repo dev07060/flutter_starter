@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_starter/models/models.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_starter/helpers/helpers.dart';
-import 'package:flutter_starter/models/models.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rive/rive.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../controllers/preference.dart';
 
@@ -65,20 +66,20 @@ class UserChatBubble extends StatelessWidget {
                         ? BorderRadius.only(
                             topRight: Radius.circular(10.0),
                             bottomRight: Radius.circular(10.0),
-                            topLeft: Radius.circular(6.0),
+                            topLeft: Radius.circular(3.0),
                             bottomLeft: Radius.circular(15.0),
                           )
                         : BorderRadius.only(
                             bottomLeft: Radius.circular(10.0),
                             bottomRight: Radius.circular(10.0),
-                            topRight: Radius.circular(15.0),
+                            topRight: Radius.circular(10.0),
                             topLeft: Radius.circular(3.0),
                           )
                     : BorderRadius.only(
                         topLeft: Radius.circular(10.0),
                         bottomLeft: Radius.circular(10.0),
-                        bottomRight: Radius.circular(15.0),
-                        topRight: Radius.circular(3.0),
+                        bottomRight: Radius.circular(3.0),
+                        topRight: Radius.circular(15.0),
                       ),
                 color: chatMessageModelRecord.id > 1
                     ? Colors.grey[200]

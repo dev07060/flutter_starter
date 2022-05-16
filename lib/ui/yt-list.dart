@@ -103,6 +103,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     },
     // {'Factor': 'F', '제목': '힐링영상', 'id': ''},
   ];
+
   final List<String> _ids = [
     'vid_1'.tr,
     'vid_2'.tr,
@@ -111,6 +112,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     'vid_5'.tr,
     'vid_6'.tr,
   ];
+
   void _start() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {

@@ -78,7 +78,7 @@ class InitSpeechWidget extends StatelessWidget {
                 horizontal: 16,
               ),
               child: Text(
-                "메타니언과 대화 해볼래요!",
+                "메타니언과 대화 시작하기!",
                 style: GoogleFonts.gowunDodum(
                   textStyle: (TextStyle(
                     fontSize: 16,
@@ -90,10 +90,6 @@ class InitSpeechWidget extends StatelessWidget {
             ),
             onPressed: hasSpeech ? null : initSpeechState,
           ),
-          // TextButton(
-          //   onPressed: hasSpeech ? null : initSpeechState,
-          //   child: Icon(Icons.mic),
-          // ),
         ],
       ),
       SizedBox(height: 20)

@@ -30,7 +30,7 @@ class _SegmentsPageState extends State<ResultSummary>
     with SingleTickerProviderStateMixin {
   var request = "${url}api/result/";
 
-  double cardClickElevation = 0;
+  double cardClickElevation = 5;
   double _pointerValue = 0;
 
   int total = 63;
@@ -408,7 +408,7 @@ class _SegmentsPageState extends State<ResultSummary>
                               aspectRatio: 1,
                               child: GestureDetector(
                                 onTap: () => {
-                                  setState(() => {cardClickElevation = 0})
+                                  setState(() => {cardClickElevation = 3})
                                 },
                                 child: Card(
                                   elevation: cardClickElevation,
@@ -487,7 +487,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                                               Color(0xff7589a2),
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 16),
+                                                          fontSize: 13),
                                                   margin: 20,
                                                   getTitles: (double value) {
                                                     switch (value.toInt()) {
@@ -579,6 +579,7 @@ class _SegmentsPageState extends State<ResultSummary>
                                   )),
                             ),
                           ),
+                    SizedBox(height: 20),
                     Align(
                       alignment: Alignment.center,
                       child: Text("요소별 측정치는 수치(%)가 높을수록 위험한 요소입니다",

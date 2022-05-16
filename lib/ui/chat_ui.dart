@@ -55,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen>
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
-  double _panelHeightClosed = 100.0;
+  double _panelHeightClosed = 200.0;
 
   double level = 0.0;
   bool _hasSpeech = false;
@@ -258,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen>
   }
 
   Widget buildSlidingPanel(BuildContext context) {
-    _panelHeightOpen = MediaQuery.of(context).size.height * .80;
+    _panelHeightOpen = MediaQuery.of(context).size.height * .300;
     return Material(
       child: Stack(alignment: Alignment.topCenter, children: <Widget>[
         SlidingUpPanel(
@@ -609,24 +609,21 @@ Future<List?> dioConnection(String _end, String _email, String _userMsg) async {
     state_list!.add(next);
     print(state_list);
 
-    if (chat.contains('\n')) chat_list = chat.split('\n');
-
-    if (response.statusCode == 200) {
-      if (chat.contains('\n')) {
-        for (var i = 0; i < chat_list.length; i++) {
-          await Future.delayed(const Duration(milliseconds: 2500), () {
-            print(i);
-          });
-          // Timer(const Duration(seconds: 1), () => {});
-          bubbleGenerate(chat_list[i]!, 2 + i, dist);
-        }
-      } else {
+    if (response.statusCode == 200 && chat.contains('\n')) {
+      chat_list = chat.split('\n');
+      for (var i = 0; i < chat_list.length; i++) {
         await Future.delayed(const Duration(milliseconds: 2500), () {
-          print("");
+          print(i);
         });
-        bubbleGenerate(chat, 2, dist);
-        return [chat, next, yn];
+        // Timer(const Duration(seconds: 1), () => {});
+        bubbleGenerate(chat_list[i]!, 2 + i, dist);
       }
+    } else {
+      await Future.delayed(const Duration(milliseconds: 2500), () {
+        print("");
+      });
+      bubbleGenerate(chat, 2, dist);
+      return [chat, next, yn];
     }
     return [chat, next, yn];
   } catch (e) {
