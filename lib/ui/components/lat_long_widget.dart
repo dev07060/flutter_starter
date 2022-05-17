@@ -18,7 +18,7 @@ class LatLongWidget extends StatelessWidget {
             location.latitude,
             style: TextStyle(color: Colors.white70),
           ),
-          Icon(Icons.location_on, color: Colors.white70),
+          Icon(Icons.music_note_outlined, color: Colors.white70),
           Text(
             location.longitude,
             style: TextStyle(color: Colors.white70),

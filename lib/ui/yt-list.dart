@@ -127,12 +127,12 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
     _controller = YoutubePlayerController(
       initialVideoId: _ids.first,
       flags: const YoutubePlayerFlags(
-        mute: false,
+        mute: true,
         autoPlay: false,
         disableDragSeek: false,
         loop: false,
         isLive: false,
-        forceHD: false,
+        forceHD: true,
         enableCaption: true,
       ),
     )..addListener(listener);
@@ -502,6 +502,7 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                     ),
                   ),
                 ),
+                onFocusChange: null,
                 onPressed: () {
                   _controller.load(element['id']!);
                 },
@@ -536,27 +537,6 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
         ],
       ),
     );
-  }
-
-  Color _getStateColor(PlayerState state) {
-    switch (state) {
-      case PlayerState.unknown:
-        return Colors.grey[700]!;
-      case PlayerState.unStarted:
-        return Colors.pink;
-      case PlayerState.ended:
-        return Colors.red;
-      case PlayerState.playing:
-        return Colors.blueAccent;
-      case PlayerState.paused:
-        return Colors.orange;
-      case PlayerState.buffering:
-        return Colors.yellow;
-      case PlayerState.cued:
-        return Colors.blue[900]!;
-      default:
-        return Colors.blue;
-    }
   }
 
   Widget get _space => const SizedBox(height: 10);

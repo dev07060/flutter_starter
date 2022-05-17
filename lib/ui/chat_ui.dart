@@ -423,8 +423,8 @@ class _ChatScreenState extends State<ChatScreen>
                             },
                             child: Padding(
                               padding: EdgeInsets.only(top: 17),
-                              child: _button("마음건강", Icons.favorite, Colors.red,
-                                  Colors.red),
+                              child: _button("마음건강", Icons.favorite,
+                                  Colors.blue[200]!, Colors.grey),
                             )),
                         OutlinedButton(
                             style: OutlinedButton.styleFrom(
@@ -447,8 +447,8 @@ class _ChatScreenState extends State<ChatScreen>
                             },
                             child: Padding(
                               padding: EdgeInsets.only(top: 17),
-                              child: _button("감정상태", Icons.emoji_emotions,
-                                  Colors.grey, Colors.grey),
+                              child: _button("힐링테마", Icons.music_note_rounded,
+                                  Colors.blue[400]!, Colors.grey),
                             )),
                         OutlinedButton(
                             style: OutlinedButton.styleFrom(

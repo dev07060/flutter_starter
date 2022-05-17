@@ -1,6 +1,10 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // const url = 'http://172.30.1.16:5000/';
 
@@ -68,3 +72,24 @@ final List<String> imagesList = [
 ];
 
 final List<String> titles = [' 5000보 걷기 ', ' 혼자 음악 듣기 ', ' 컬러링북 ', ' 5분 명상 '];
+
+Color _getStateColor(PlayerState state) {
+  switch (state) {
+    case PlayerState.unknown:
+      return Colors.grey[700]!;
+    case PlayerState.unStarted:
+      return Colors.pink;
+    case PlayerState.ended:
+      return Colors.red;
+    case PlayerState.playing:
+      return Colors.blueAccent;
+    case PlayerState.paused:
+      return Colors.orange;
+    case PlayerState.buffering:
+      return Colors.yellow;
+    case PlayerState.cued:
+      return Colors.blue[900]!;
+    default:
+      return Colors.blue;
+  }
+}

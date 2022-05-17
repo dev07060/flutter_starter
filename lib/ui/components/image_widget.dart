@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_starter/constants/hero_tag.dart';
 import 'package:flutter_starter/models/location.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'hero_widget.dart';
 import 'lat_long_widget.dart';
 
@@ -59,10 +60,12 @@ class ImageWidget extends StatelessWidget {
 
   Widget buildTopText() => Text(
         location.name,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+        style: GoogleFonts.montserrat(
+          textStyle: (TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w200,
+            color: Colors.black45,
+          )),
         ),
       );
 }
