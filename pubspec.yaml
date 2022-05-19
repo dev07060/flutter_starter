@@ -47,7 +47,11 @@ dependencies:
   auto_size_text: ^3.0.0
   syncfusion_flutter_core: ^20.1.52
   syncfusion_flutter_sliders: ^20.1.52
-
+  flutter_lints: ^1.0.4
+  image_picker: ^0.8.5
+  camera: ^0.9.4+21
+  path_provider: ^2.0.9
+  google_mlkit_face_detection: ^0.3.0
 
 dependency_overrides:
  # analyzer: 1.4.0
@@ -61,3 +65,4 @@ flutter:
   assets:
     - google_fonts/
     - assets/images/
+    - assets/ml/

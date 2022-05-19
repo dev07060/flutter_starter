@@ -48,7 +48,7 @@ class AuthController extends GetxController {
       await isAdmin();
     }
 
-    if (_firebaseUser == null) {
+    if (_firebaseUser != null) {
       print('Send to signin');
       Get.offAll(() => SignInUI(
           // passwordFocusNode: passwordFocusNode,

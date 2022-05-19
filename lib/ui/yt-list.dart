@@ -319,39 +319,31 @@ class _YoutubePlayerListState extends State<YoutubePlayerList> {
                     icon: _isFavorite
                         ? Icon(Icons.favorite)
                         : Icon(Icons.favorite_outline),
-                    onPressed: !_isExcept
-                        ? () => {
-                              setState(() {
-                                !_isFavorite
-                                    ? _isFavorite = true
-                                    : _isFavorite = false;
-                              }),
-                              _isFavorite
-                                  ? _showSnackBar('찜 컨텐츠로 저장되었습니다', 'notice')
-                                  : _showSnackBar('찜 컨텐츠에서 삭제되었습니다', 'notice'),
-                            }
-                        : () {
-                            _showSnackBar('먼저 제외 컨텐츠에서 삭제하세요', 'warning');
+                    onPressed: () => {
+                          setState(() {
+                            !_isFavorite
+                                ? [_isFavorite = true, _isExcept = false]
+                                : _isFavorite = false;
                           }),
+                          _isFavorite
+                              ? _showSnackBar('찜 컨텐츠로 저장되었습니다', 'notice')
+                              : _showSnackBar('찜 컨텐츠에서 삭제되었습니다', 'notice'),
+                        }),
                 IconButton(
                     color: _isExcept ? Colors.blue[400] : null,
                     icon: _isExcept
                         ? Icon(Icons.thumb_down)
                         : Icon(Icons.thumb_down_outlined),
-                    onPressed: !_isFavorite
-                        ? () => {
-                              setState(() {
-                                !_isExcept
-                                    ? _isExcept = true
-                                    : _isExcept = false;
-                              }),
-                              _isExcept
-                                  ? _showSnackBar('제외 컨텐츠로 저장되었습니다', 'notice')
-                                  : _showSnackBar('제외 컨텐츠에서 삭제되었습니다', 'notice'),
-                            }
-                        : () {
-                            _showSnackBar('먼저 찜 컨텐츠에서 삭제하세요', 'warning');
+                    onPressed: () => {
+                          setState(() {
+                            !_isExcept
+                                ? [_isExcept = true, _isFavorite = false]
+                                : _isExcept = false;
                           }),
+                          _isExcept
+                              ? _showSnackBar('제외 컨텐츠로 저장되었습니다', 'notice')
+                              : _showSnackBar('제외 컨텐츠에서 삭제되었습니다', 'notice'),
+                        }),
               ],
             ),
             _space,
